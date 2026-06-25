@@ -25,29 +25,12 @@ body{
     transition:0.3s;
 }
 
-/* ===== LIGHT MODE (تصليح شامل) ===== */
-body.light{
-    background:#f1f5f9;
-    color:#0f172a;
-}
-
-body.light section{
-    background:#f1f5f9;
-}
-
-body.light .card{
-    background:white;
-    color:#0f172a;
-}
-
-body.light header{
-    background:#dbeafe;
-}
-
-body.light .top-bar{
-    background:white;
-    color:#0f172a;
-}
+/* ===== LIGHT MODE ===== */
+body.light{ background:#f1f5f9; color:#0f172a; }
+body.light section{ background:#f1f5f9; }
+body.light .card{ background:white; color:#0f172a; }
+body.light header{ background:#dbeafe; }
+body.light .top-bar{ background:white; color:#0f172a; }
 
 /* ===== TOP BAR ===== */
 .top-bar{
@@ -59,69 +42,76 @@ body.light .top-bar{
     color:#38bdf8;
     padding:8px 15px;
     position:fixed;
-    top:0;
-    left:0;
+    top:0; left:0;
     z-index:2000;
     box-shadow:0 2px 10px rgba(0,0,0,0.4);
 }
 
-.left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+.left{ display:flex; align-items:center; gap:10px; }
+.logo{ font-size:13px; font-weight:bold; letter-spacing:2px; }
+.menu-btn{ font-size:20px; cursor:pointer; }
 
-.logo{
-    font-size:13px;
-    font-weight:bold;
-    letter-spacing:2px;
-}
-
-.menu-btn{
-    font-size:20px;
-    cursor:pointer;
-}
-
+/* ===== DARK MODE BUTTON ===== */
 .mode-btn{
     font-size:18px;
     cursor:pointer;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.mode-btn i{
+    position:absolute;
+    transition: opacity 0.35s ease, transform 0.45s ease;
+}
+
+/* moon visible by default */
+.mode-btn .fa-moon{
+    opacity:1;
+    transform: rotate(0deg) scale(1);
+}
+.mode-btn .fa-sun{
+    opacity:0;
+    transform: rotate(-90deg) scale(0.5);
+    color:#f59e0b;
+}
+
+/* when light mode active — show sun, hide moon */
+body.light .mode-btn .fa-moon{
+    opacity:0;
+    transform: rotate(90deg) scale(0.5);
+}
+body.light .mode-btn .fa-sun{
+    opacity:1;
+    transform: rotate(0deg) scale(1);
 }
 
 /* ===== MENU ===== */
 .overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
     background:rgba(0,0,0,0.4);
-    display:none;
-    z-index:1500;
+    display:none; z-index:1500;
 }
 
 .menu{
-    position:fixed;
-    top:55px;
-    left:15px;
-    background:#1e293b;
-    border-radius:12px;
-    padding:10px;
-    display:none;
-    flex-direction:column;
-    gap:8px;
-    z-index:2001;
-    min-width:170px;
+    position:fixed; top:55px; left:15px;
+    background:#1e293b; border-radius:12px;
+    padding:10px; display:none;
+    flex-direction:column; gap:8px;
+    z-index:2001; min-width:170px;
 }
 
 .menu a{
-    color:white;
-    text-decoration:none;
-    padding:8px 10px;
-    border-radius:8px;
+    color:white; text-decoration:none;
+    padding:8px 10px; border-radius:8px;
     background:#0f172a;
 }
 
-/* ===== HEADER (نفس القديم) ===== */
+/* ===== HEADER ===== */
 header{
     background:#153E7E;
     min-height:100vh;
@@ -141,220 +131,171 @@ header{
 }
 
 /* ===== PROFILE PIC WRAPPER + ORBIT ANIMATION ===== */
-
-.pic-wrapper {
-    position: relative;
-    width: 310px;
-    height: 310px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
+.pic-wrapper{
+    position:relative;
+    width:340px;
+    height:340px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
 }
 
-/* --- الصورة --- */
-.profile-pic {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid rgba(0, 245, 196, 0.5);
+.profile-pic{
+    width:230px;
+    height:230px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(0,245,196,0.5);
     box-shadow:
-        0 0 20px rgba(0, 245, 196, 0.3),
-        0 0 60px rgba(0, 245, 196, 0.1);
-    position: relative;
-    z-index: 5;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+        0 0 20px rgba(0,245,196,0.3),
+        0 0 60px rgba(0,245,196,0.1);
+    position:relative;
+    z-index:5;
+    transition:transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.pic-wrapper:hover .profile-pic {
-    transform: scale(1.05);
+.pic-wrapper:hover .profile-pic{
+    transform:scale(1.05);
     box-shadow:
-        0 0 30px rgba(0, 245, 196, 0.6),
-        0 0 80px rgba(0, 245, 196, 0.2);
+        0 0 30px rgba(0,245,196,0.6),
+        0 0 80px rgba(0,245,196,0.2);
 }
 
-/* --- الحلقات --- */
-.ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1.5px solid transparent;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* --- Rings --- */
+.ring{
+    position:absolute;
+    border-radius:50%;
+    border:1.5px solid transparent;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
 }
 
-/* Ring 1 — متوسط — clockwise */
-.ring-1 {
-    width: 260px;
-    height: 260px;
-    border-color: rgba(0, 245, 196, 0.25);
-    box-shadow: 0 0 8px rgba(0, 245, 196, 0.15);
-    animation: spinCW 6s linear infinite;
+/* Ring 1 — medium — clockwise */
+.ring-1{
+    width:282px; height:282px;
+    border-color:rgba(0,245,196,0.25);
+    box-shadow:0 0 8px rgba(0,245,196,0.15);
+    animation:spinCW 6s linear infinite;
 }
 
-/* Ring 2 — كبير — counter-clockwise */
-.ring-2 {
-    width: 295px;
-    height: 295px;
-    border-color: rgba(56, 189, 248, 0.2);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.1);
-    animation: spinCCW 9s linear infinite;
+/* Ring 2 — large — counter-clockwise */
+.ring-2{
+    width:322px; height:322px;
+    border-color:rgba(56,189,248,0.2);
+    box-shadow:0 0 8px rgba(56,189,248,0.1);
+    animation:spinCCW 9s linear infinite;
 }
 
-/* Ring 3 — صغير — clockwise سريع */
-.ring-3 {
-    width: 235px;
-    height: 235px;
-    border-color: rgba(167, 243, 208, 0.15);
-    animation: spinCW 4s linear infinite;
+/* Ring 3 — small — clockwise fast */
+.ring-3{
+    width:256px; height:256px;
+    border-color:rgba(167,243,208,0.15);
+    animation:spinCW 4s linear infinite;
 }
 
-/* --- النقاط المضيئة (Dots) --- */
-.dot {
-    position: absolute;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
+/* --- Glowing Dots --- */
+.dot{
+    position:absolute;
+    border-radius:50%;
+    top:50%; left:50%;
 }
 
-/* Dot 1 — على ring-1 — teal */
-.dot-1 {
-    width: 10px;
-    height: 10px;
-    background: #00f5c4;
+/* Dot 1 — ring-1 — teal */
+.dot-1{
+    width:10px; height:10px;
+    background:#00f5c4;
     box-shadow:
-        0 0 8px 3px rgba(0, 245, 196, 0.9),
-        0 0 20px 6px rgba(0, 245, 196, 0.4);
-    margin-top: -130px;
-    margin-left: -5px;
-    animation: orbitCW1 6s linear infinite;
-    transform-origin: 5px 130px;
+        0 0 8px 3px rgba(0,245,196,0.9),
+        0 0 20px 6px rgba(0,245,196,0.4);
+    margin-top:-141px; margin-left:-5px;
+    animation:orbitCW1 6s linear infinite;
+    transform-origin:5px 141px;
 }
 
-/* Dot 2 — على ring-2 — blue */
-.dot-2 {
-    width: 8px;
-    height: 8px;
-    background: #38bdf8;
+/* Dot 2 — ring-2 — blue */
+.dot-2{
+    width:8px; height:8px;
+    background:#38bdf8;
     box-shadow:
-        0 0 8px 3px rgba(56, 189, 248, 0.9),
-        0 0 20px 6px rgba(56, 189, 248, 0.4);
-    margin-top: -148px;
-    margin-left: -4px;
-    animation: orbitCCW2 9s linear infinite;
-    transform-origin: 4px 148px;
+        0 0 8px 3px rgba(56,189,248,0.9),
+        0 0 20px 6px rgba(56,189,248,0.4);
+    margin-top:-161px; margin-left:-4px;
+    animation:orbitCCW2 9s linear infinite;
+    transform-origin:4px 161px;
 }
 
-/* Dot 3 — على ring-2 — نقطة ثانية بتأخير */
-.dot-3 {
-    width: 6px;
-    height: 6px;
-    background: #a7f3d0;
+/* Dot 3 — ring-2 — second dot with delay */
+.dot-3{
+    width:6px; height:6px;
+    background:#a7f3d0;
     box-shadow:
-        0 0 6px 2px rgba(167, 243, 208, 0.9),
-        0 0 16px 5px rgba(167, 243, 208, 0.3);
-    margin-top: -148px;
-    margin-left: -3px;
-    animation: orbitCCW2 9s linear infinite;
-    animation-delay: -4.5s;
-    transform-origin: 3px 148px;
+        0 0 6px 2px rgba(167,243,208,0.9),
+        0 0 16px 5px rgba(167,243,208,0.3);
+    margin-top:-161px; margin-left:-3px;
+    animation:orbitCCW2 9s linear infinite;
+    animation-delay:-4.5s;
+    transform-origin:3px 161px;
 }
 
 /* --- Keyframes --- */
-@keyframes spinCW {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes spinCW{
+    from{ transform:translate(-50%,-50%) rotate(0deg); }
+    to  { transform:translate(-50%,-50%) rotate(360deg); }
+}
+@keyframes spinCCW{
+    from{ transform:translate(-50%,-50%) rotate(0deg); }
+    to  { transform:translate(-50%,-50%) rotate(-360deg); }
+}
+@keyframes orbitCW1{
+    from{ transform:rotate(0deg); }
+    to  { transform:rotate(360deg); }
+}
+@keyframes orbitCCW2{
+    from{ transform:rotate(0deg); }
+    to  { transform:rotate(-360deg); }
 }
 
-@keyframes spinCCW {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to   { transform: translate(-50%, -50%) rotate(-360deg); }
+/* Responsive */
+@media(max-width:480px){
+    .pic-wrapper { width:265px; height:265px; }
+    .profile-pic { width:178px; height:178px; }
+    .ring-1      { width:218px; height:218px; }
+    .ring-2      { width:250px; height:250px; }
+    .ring-3      { width:198px; height:198px; }
+    .dot-1       { margin-top:-109px; margin-left:-5px; transform-origin:5px 109px; }
+    .dot-2       { margin-top:-125px; margin-left:-4px; transform-origin:4px 125px; }
+    .dot-3       { margin-top:-125px; margin-left:-3px; transform-origin:3px 125px; }
 }
 
-@keyframes orbitCW1 {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-}
+/* ===== HERO TEXT ===== */
+.hero-text{ text-align:left; }
+.hero-text h1{ font-size:3rem; color:#38bdf8; margin-bottom:10px; }
+.hero-text p{ font-size:1.2rem; margin-bottom:20px; color:#cbd5e1; }
 
-@keyframes orbitCCW2 {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(-360deg); }
-}
-
-/* --- Responsive --- */
-@media (max-width: 480px) {
-    .pic-wrapper  { width: 240px; height: 240px; }
-    .profile-pic  { width: 170px; height: 170px; }
-    .ring-1       { width: 200px; height: 200px; }
-    .ring-2       { width: 228px; height: 228px; }
-    .ring-3       { width: 182px; height: 182px; }
-    .dot-1        { margin-top:-100px; margin-left:-5px; transform-origin:5px 100px; }
-    .dot-2        { margin-top:-114px; margin-left:-4px; transform-origin:4px 114px; }
-    .dot-3        { margin-top:-114px; margin-left:-3px; transform-origin:3px 114px; }
-}
-
-.hero-text{
-    text-align:left;
-}
-
-.hero-text h1{
-    font-size:3rem;
-    color:#38bdf8;
-    margin-bottom:10px;
-}
-
-.hero-text p{
-    font-size:1.2rem;
-    margin-bottom:20px;
-    color:#cbd5e1;
-}
-
-.buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
+.buttons{ display:flex; flex-wrap:wrap; gap:10px; }
 
 .btn{
-    background:#38bdf8;
-    color:white;
-    text-decoration:none;
-    padding:12px 22px;
-    border-radius:8px;
-    transition:.3s;
-    font-weight:bold;
+    background:#38bdf8; color:white;
+    text-decoration:none; padding:12px 22px;
+    border-radius:8px; transition:.3s; font-weight:bold;
 }
+.btn:hover{ background:#0ea5e9; transform:translateY(-2px); }
 
-.btn:hover{
-    background:#0ea5e9;
-    transform:translateY(-2px);
-}
-
-/* ===== SECTIONS (نفس القديم) ===== */
+/* ===== SECTIONS ===== */
 section{
     padding:60px 10%;
     border-bottom:1px solid #1e293b;
 }
 
-h2{
-    color:#38bdf8;
-    margin-bottom:25px;
-    font-size:2rem;
-}
+h2{ color:#38bdf8; margin-bottom:25px; font-size:2rem; }
 
 .card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:15px;
-    transition:.3s;
+    background:#1e293b; padding:20px;
+    border-radius:12px; margin-bottom:15px; transition:.3s;
 }
-
-.card:hover{
-    transform:translateY(-3px);
-}
+.card:hover{ transform:translateY(-3px); }
 
 .skills-grid{
     display:grid;
@@ -362,67 +303,43 @@ h2{
     gap:15px;
 }
 
-/* ===== SOCIAL (نفس القديم) ===== */
+/* ===== SOCIAL ===== */
 .social-links{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:20px;
+    display:flex; justify-content:center;
+    gap:20px; margin-top:20px;
 }
 
 .social-links a{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:26px;
-    color:white;
-    text-decoration:none;
-    transition:0.3s;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    width:60px; height:60px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; color:white; text-decoration:none;
+    transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
 
-.email{ background:#ea4335; }
+.email   { background:#ea4335; }
 .facebook{ background:#1877f2; }
 .linkedin{ background:#0077b5; }
 .whatsapp{ background:#25d366; }
-
-.social-links a:hover{
-    transform:scale(1.15);
-}
+.social-links a:hover{ transform:scale(1.15); }
 
 footer{
     border-top:1px solid #334155;
-    text-align:center;
-    padding:15px;
-    font-size:14px;
-    color:#94a3b8;
+    text-align:center; padding:15px;
+    font-size:14px; color:#94a3b8;
 }
 
 /* ===== LIGHTBOX ===== */
 .lightbox{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    display:none; position:fixed;
+    top:0; left:0; width:100%; height:100%;
     background:rgba(0,0,0,0.85);
-    z-index:9999;
-    justify-content:center;
-    align-items:center;
-    cursor:zoom-out;
+    z-index:9999; justify-content:center;
+    align-items:center; cursor:zoom-out;
 }
-
-.lightbox.active{
-    display:flex;
-}
+.lightbox.active{ display:flex; }
 
 .lightbox img{
-    max-width:90vw;
-    max-height:90vh;
+    max-width:90vw; max-height:90vh;
     border-radius:16px;
     border:4px solid #38bdf8;
     box-shadow:0 0 50px rgba(56,189,248,0.5);
@@ -430,23 +347,67 @@ footer{
 }
 
 .lightbox-close{
-    position:absolute;
-    top:20px;
-    right:28px;
-    font-size:38px;
-    color:white;
-    cursor:pointer;
-    line-height:1;
-    transition:color 0.2s;
+    position:absolute; top:20px; right:28px;
+    font-size:38px; color:white;
+    cursor:pointer; line-height:1; transition:color 0.2s;
 }
-
-.lightbox-close:hover{
-    color:#38bdf8;
-}
+.lightbox-close:hover{ color:#38bdf8; }
 
 @keyframes zoomIn{
     from{ transform:scale(0.7); opacity:0; }
-    to{ transform:scale(1); opacity:1; }
+    to  { transform:scale(1);   opacity:1; }
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+}
+
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* stagger cards inside a revealed section */
+.reveal .card,
+.reveal .skills-grid .card{
+    opacity:0;
+    transform:translateY(25px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible .card{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* stagger delay for grid cards */
+.reveal.visible .skills-grid .card:nth-child(1){ transition-delay:0.05s; }
+.reveal.visible .skills-grid .card:nth-child(2){ transition-delay:0.12s; }
+.reveal.visible .skills-grid .card:nth-child(3){ transition-delay:0.19s; }
+.reveal.visible .skills-grid .card:nth-child(4){ transition-delay:0.26s; }
+.reveal.visible .skills-grid .card:nth-child(5){ transition-delay:0.33s; }
+.reveal.visible .skills-grid .card:nth-child(6){ transition-delay:0.40s; }
+.reveal.visible .skills-grid .card:nth-child(7){ transition-delay:0.47s; }
+.reveal.visible .skills-grid .card:nth-child(8){ transition-delay:0.54s; }
+
+/* stagger for regular cards */
+.reveal.visible > .card:nth-child(1){ transition-delay:0.1s; }
+.reveal.visible > .card:nth-child(2){ transition-delay:0.22s; }
+.reveal.visible > .card:nth-child(3){ transition-delay:0.34s; }
+
+/* h2 inside section */
+.reveal h2{
+    opacity:0;
+    transform:translateX(-20px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible h2{
+    opacity:1;
+    transform:translateX(0);
+    transition-delay:0s;
 }
 </style>
 </head>
@@ -455,7 +416,6 @@ footer{
 
 <!-- ===== TOP BAR ===== -->
 <div class="top-bar">
-
     <div class="left">
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <div class="logo">GIS Portfolio</div>
@@ -463,8 +423,8 @@ footer{
 
     <div class="mode-btn" onclick="toggleMode()">
         <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
     </div>
-
 </div>
 
 <!-- OVERLAY -->
@@ -485,7 +445,7 @@ footer{
     <img src="صورة.jpg" alt="Profile Picture Full View" onclick="event.stopPropagation()">
 </div>
 
-<!-- ===== HEADER (نفس كلامك) ===== -->
+<!-- ===== HEADER ===== -->
 <header>
 <div class="hero">
 
@@ -516,8 +476,8 @@ footer{
 </div>
 </header>
 
-<!-- ===== ABOUT (نفس كلامك) ===== -->
-<section id="about">
+<!-- ===== ABOUT ===== -->
+<section id="about" class="reveal">
     <h2>About Me</h2>
     <div class="card">
         GIS Specialist with strong experience in ArcGIS, Remote Sensing, Spatial Analysis, Cartography, and Geospatial Data Processing.
@@ -525,7 +485,7 @@ footer{
 </section>
 
 <!-- ===== SKILLS ===== -->
-<section id="skills">
+<section id="skills" class="reveal">
     <h2>Skills</h2>
     <div class="skills-grid">
         <div class="card">ArcGIS Pro</div>
@@ -540,14 +500,12 @@ footer{
 </section>
 
 <!-- ===== PROJECTS ===== -->
-<section id="projects">
+<section id="projects" class="reveal">
     <h2>Projects</h2>
-
     <div class="card">
         <h3>Sand Dune Movement Analysis using ArcGIS</h3>
         <p>Spatial analysis and monitoring of sand dune movement.</p>
     </div>
-
     <div class="card">
         <h3>Solid Waste Landfill Suitability Analysis</h3>
         <p>Multi-criteria GIS model for landfill selection.</p>
@@ -555,34 +513,28 @@ footer{
 </section>
 
 <!-- ===== CERTIFICATES ===== -->
-<section id="certificates">
+<section id="certificates" class="reveal">
     <h2>Certificates</h2>
     <div class="card">ESRI Certifications (17+ Courses)</div>
     <div class="card">GIS & Remote Sensing Training</div>
 </section>
 
 <!-- ===== CONTACT ===== -->
-<section id="contact">
+<section id="contact" class="reveal">
     <h2>Contact Me</h2>
-
     <div class="social-links">
-
         <a href="mailto:abdousaleh036@gmail.com" class="email">
             <i class="fa-solid fa-envelope"></i>
         </a>
-
         <a href="https://www.facebook.com/abdelrhmansaleh036" class="facebook">
             <i class="fa-brands fa-facebook-f"></i>
         </a>
-
         <a href="https://www.linkedin.com/in/3bdelrhman-saleh" class="linkedin">
             <i class="fa-brands fa-linkedin-in"></i>
         </a>
-
         <a href="https://wa.me/201092608662" class="whatsapp">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
-
     </div>
 </section>
 
@@ -592,36 +544,32 @@ footer{
 
 <script>
 
-/* MENU */
-let menu = document.getElementById("menu");
+/* ===== MENU ===== */
+let menu    = document.getElementById("menu");
 let overlay = document.getElementById("overlay");
 
 function toggleMenu(){
-    if(menu.style.display === "flex"){
-        closeMenu();
-    }else{
-        menu.style.display = "flex";
-        overlay.style.display = "block";
-    }
+    if(menu.style.display === "flex"){ closeMenu(); }
+    else{ menu.style.display = "flex"; overlay.style.display = "block"; }
 }
 
 function closeMenu(){
-    menu.style.display = "none";
+    menu.style.display  = "none";
     overlay.style.display = "none";
 }
 
 overlay.onclick = closeMenu;
 window.addEventListener("scroll", closeMenu);
-document.querySelectorAll(".menu a").forEach(a=>{
+document.querySelectorAll(".menu a").forEach(a => {
     a.addEventListener("click", closeMenu);
 });
 
-/* DARK MODE */
+/* ===== DARK / LIGHT MODE ===== */
 function toggleMode(){
     document.body.classList.toggle("light");
 }
 
-/* LIGHTBOX */
+/* ===== LIGHTBOX ===== */
 function openLightbox(){
     document.getElementById("lightbox").classList.add("active");
     document.body.style.overflow = "hidden";
@@ -635,6 +583,20 @@ function closeLightbox(){
 document.addEventListener("keydown", function(e){
     if(e.key === "Escape") closeLightbox();
 });
+
+/* ===== SCROLL REVEAL ===== */
+const revealEls = document.querySelectorAll(".reveal");
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target); // run once
+        }
+    });
+}, { threshold: 0.12 });
+
+revealEls.forEach(el => revealObserver.observe(el));
 
 </script>
 
