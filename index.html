@@ -578,6 +578,8 @@ body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); b
     background: #070e1a;
     display: flex;
     flex-direction: column;
+    height: 88vh;
+    max-height: 88vh;
 }
 
 /* --- Toolbar --- */
@@ -687,8 +689,8 @@ body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); b
     overflow-y: auto;
     overflow-x: auto;
     flex: 1;
-    /* Fixed viewport height so the page doesn't scroll, only the canvas area does */
-    height: 82vh;
+    /* prevents flex child from growing beyond wrapper */
+    min-height: 0;
     background: #111827;
     display: flex;
     flex-direction: column;
@@ -742,7 +744,8 @@ body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); b
 
 /* responsive */
 @media(max-width:600px){
-    .pdfjs-canvas-area{ height: 70vh; padding: 12px 8px; gap: 10px; }
+    .pdfjs-viewer-wrap{ height: 80vh; max-height: 80vh; }
+    .pdfjs-canvas-area{ padding: 12px 8px; gap: 10px; }
     .pdfjs-toolbar{ gap: 4px; padding: 8px 10px; }
     .pdfjs-btn{ padding: 5px 8px; font-size: 0.72rem; }
     .pdfjs-zoom-select{ padding: 4px 6px; }
