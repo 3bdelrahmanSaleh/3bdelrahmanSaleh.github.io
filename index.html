@@ -164,7 +164,7 @@ h2{ color:#38bdf8; margin-bottom:25px; font-size:2rem; }
 
 footer{ border-top:1px solid #334155; text-align:center; padding:15px; font-size:14px; color:#94a3b8; }
 
-/* ===== LIGHTBOX ===== */
+/* ===== PROFILE LIGHTBOX ===== */
 .lightbox{
     display:none; position:fixed; top:0; left:0; width:100%; height:100%;
     background:rgba(0,0,0,0.85); z-index:9999;
@@ -250,7 +250,10 @@ body.light .cert-category-title h3{ color: #0f172a; }
 @media(max-width:1024px){ .cert-grid{ grid-template-columns: repeat(2,1fr); } }
 @media(max-width:600px) { .cert-grid{ grid-template-columns: 1fr; } }
 
-/* --- Certificate Card (Glassmorphism) --- */
+/* =====================================================
+   [NEW] CERTIFICATE CARD — Fade-Up Scroll Reveal Fix
+   Cards start hidden and animate in via JS observer
+   ===================================================== */
 .cert-card{
     background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.8));
     border: 1px solid rgba(56,189,248,0.15);
@@ -258,9 +261,22 @@ body.light .cert-category-title h3{ color: #0f172a; }
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    /* [NEW] Equal height for all cards */
+    height: 100%;
+    /* [NEW] Transition covers hover AND the fade-up reveal */
+    transition: opacity 0.65s ease, transform 0.65s ease,
+                box-shadow 0.35s ease, border-color 0.35s ease;
     backdrop-filter: blur(6px);
     position: relative;
+    /* [NEW] Start invisible + shifted down (fade-up state) */
+    opacity: 0;
+    transform: translateY(36px);
+}
+
+/* [NEW] Card becomes visible when JS adds .card-visible directly on it */
+.cert-card.card-visible{
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .cert-card::before{
@@ -270,27 +286,62 @@ body.light .cert-category-title h3{ color: #0f172a; }
     border-radius:16px;
     background: linear-gradient(135deg, rgba(0,245,196,0.04) 0%, transparent 60%);
     pointer-events:none;
+    /* [NEW] Smooth transition for the pseudo-element glow */
+    transition: opacity 0.35s ease;
 }
 
+/* [NEW] Professional hover: lift + shadow + subtle scale */
 .cert-card:hover{
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,245,196,0.12), 0 4px 16px rgba(0,0,0,0.4);
-    border-color: rgba(0,245,196,0.35);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 50px rgba(0,245,196,0.18), 0 6px 20px rgba(0,0,0,0.5);
+    border-color: rgba(0,245,196,0.45);
 }
 
-/* image placeholder / thumbnail */
+/* [NEW] Brighter inner glow on hover */
+.cert-card:hover::before{
+    opacity: 2.5;
+}
+
+/* [NEW] Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .cert-card{
+        transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        transform: none !important;
+    }
+    .cert-card:hover{ transform: none !important; }
+    .reveal.visible .cert-card{ transform: none; }
+}
+
+/* =====================================================
+   [NEW] CERTIFICATE THUMBNAIL — Uniform sizing
+   object-fit: contain so the full cert is always visible
+   ===================================================== */
 .cert-thumb{
     width: 100%;
-    height: 160px;
-    object-fit: cover;
+    /* [NEW] Slightly taller frame so portrait certs show fully */
+    height: 200px;
+    /* [NEW] contain = full cert visible, no cropping */
+    object-fit: contain;
     display: block;
-    background: linear-gradient(135deg, #0f2744, #0a3060);
+    /* [NEW] Dark background behind the image area */
+    background: linear-gradient(135deg, #0a1628, #0d2040);
+    border-bottom: 1px solid rgba(56,189,248,0.12);
+    /* [NEW] Small padding so cert doesn't touch the card edges */
+    padding: 10px;
+    box-sizing: border-box;
+    /* [NEW] Cursor indicates clickable */
+    cursor: zoom-in;
+    transition: opacity 0.3s ease;
+}
+
+.cert-thumb:hover{
+    opacity: 0.85;
 }
 
 /* placeholder when no real image */
 .cert-thumb-placeholder{
     width: 100%;
-    height: 160px;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -324,22 +375,29 @@ body.light .cert-category-title h3{ color: #0f172a; }
 
 body.light .cert-desc{ color: #475569; }
 
+/* [NEW] Button row — holds both Verify and View Image buttons */
+.cert-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
 .cert-verify{
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-top: 6px;
-    padding: 9px 16px;
+    padding: 9px 14px;
     border-radius: 8px;
     font-size: 0.82rem;
     font-weight: 700;
     text-decoration: none;
     letter-spacing: 0.4px;
     transition: all 0.3s ease;
-    align-self: flex-start;
     background: linear-gradient(135deg, rgba(0,245,196,0.12), rgba(56,189,248,0.12));
     border: 1px solid rgba(0,245,196,0.3);
     color: #00f5c4;
+    cursor: pointer;
 }
 
 .cert-verify:hover{
@@ -356,7 +414,33 @@ body.light .cert-desc{ color: #475569; }
     pointer-events: none;
 }
 
-/* --- PDF Viewer --- */
+/* [NEW] View Image button — secondary style */
+.cert-view-img{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.4px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(56,189,248,0.10), rgba(14,165,233,0.10));
+    border: 1px solid rgba(56,189,248,0.25);
+    color: #38bdf8;
+    cursor: pointer;
+}
+
+.cert-view-img:hover{
+    background: linear-gradient(135deg, rgba(56,189,248,0.22), rgba(14,165,233,0.18));
+    border-color: rgba(56,189,248,0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(56,189,248,0.18);
+    color: #38bdf8;
+}
+
+/* --- PDF Viewer (scroll-within section) --- */
 .pdf-section{
     margin-top: 55px;
     padding-top: 40px;
@@ -401,24 +485,230 @@ body.light .cert-card{
     background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(241,245,249,0.9));
     border-color: rgba(56,189,248,0.25);
 }
+body.light .cert-thumb{
+    background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+}
 body.light .cert-thumb-placeholder{
     background: linear-gradient(135deg, #dbeafe, #e0f2fe);
     color: rgba(14,165,233,0.3);
 }
 body.light .cert-title{ color: #0369a1; }
 body.light .cert-verify{ color: #0369a1; border-color: rgba(14,165,233,0.4); background: rgba(14,165,233,0.08); }
+body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); background: rgba(14,165,233,0.06); }
 body.light .pdf-viewer-wrap{ background: #f8fafc; border-color: rgba(56,189,248,0.3); }
 
-/* stagger for cert cards in reveal */
-.reveal.visible .cert-card{ opacity:1; transform:translateY(0); }
-.cert-card{ opacity:0; transform:translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
-.reveal.visible .cert-grid .cert-card:nth-child(1){ transition-delay:0.06s; }
-.reveal.visible .cert-grid .cert-card:nth-child(2){ transition-delay:0.14s; }
-.reveal.visible .cert-grid .cert-card:nth-child(3){ transition-delay:0.22s; }
-.reveal.visible .cert-grid .cert-card:nth-child(4){ transition-delay:0.30s; }
-.reveal.visible .cert-grid .cert-card:nth-child(5){ transition-delay:0.38s; }
-.reveal.visible .cert-grid .cert-card:nth-child(6){ transition-delay:0.46s; }
-.reveal.visible .cert-grid .cert-card:nth-child(7){ transition-delay:0.54s; }
+/* =====================================================
+   [NEW] CERTIFICATE IMAGE LIGHTBOX
+   Opens cert image full-size over the page
+   ===================================================== */
+.cert-lightbox{
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    /* [NEW] Fade-in animation */
+    animation: certLbFadeIn 0.3s ease forwards;
+}
+
+.cert-lightbox.active{ display: flex; }
+
+@keyframes certLbFadeIn{
+    from{ opacity: 0; }
+    to  { opacity: 1; }
+}
+
+/* [NEW] Closing fade-out */
+.cert-lightbox.closing{
+    animation: certLbFadeOut 0.25s ease forwards;
+}
+
+@keyframes certLbFadeOut{
+    from{ opacity: 1; }
+    to  { opacity: 0; }
+}
+
+.cert-lightbox-inner{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 92vw;
+    max-height: 92vh;
+}
+
+.cert-lightbox img{
+    max-width: 90vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 14px;
+    border: 3px solid rgba(0,245,196,0.5);
+    box-shadow: 0 0 60px rgba(0,245,196,0.25), 0 0 120px rgba(56,189,248,0.1);
+    /* [NEW] Zoom-in entrance */
+    animation: certImgZoom 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    cursor: default;
+}
+
+@keyframes certImgZoom{
+    from{ transform: scale(0.65); opacity: 0; }
+    to  { transform: scale(1);    opacity: 1; }
+}
+
+.cert-lightbox-close{
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(15,23,42,0.9);
+    border: 2px solid rgba(0,245,196,0.5);
+    color: #00f5c4;
+    font-size: 20px;
+    line-height: 34px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 10001;
+    user-select: none;
+}
+
+.cert-lightbox-close:hover{
+    background: rgba(0,245,196,0.2);
+    border-color: #00f5c4;
+    transform: scale(1.15);
+}
+
+/* =====================================================
+   [NEW] PDF MODAL — Opens PDF inside the page
+   No new tab, no download, stays in site
+   ===================================================== */
+.pdf-modal{
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.88);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: pdfFadeIn 0.3s ease forwards;
+}
+
+.pdf-modal.active{ display: flex; }
+
+@keyframes pdfFadeIn{
+    from{ opacity: 0; }
+    to  { opacity: 1; }
+}
+
+.pdf-modal.closing{
+    animation: pdfFadeOut 0.25s ease forwards;
+}
+
+@keyframes pdfFadeOut{
+    from{ opacity: 1; }
+    to  { opacity: 0; }
+}
+
+.pdf-modal-box{
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 90vh;
+    background: #0a1628;
+    border-radius: 18px;
+    border: 1px solid rgba(56,189,248,0.25);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,245,196,0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: pdfBoxSlide 0.35s cubic-bezier(0.34,1.4,0.64,1) forwards;
+}
+
+@keyframes pdfBoxSlide{
+    from{ transform: translateY(30px) scale(0.97); opacity: 0; }
+    to  { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+.pdf-modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(30,41,59,0.95);
+    border-bottom: 1px solid rgba(56,189,248,0.15);
+    flex-shrink: 0;
+}
+
+.pdf-modal-title{
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #38bdf8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pdf-modal-title i{ color: #ef4444; font-size: 1.1rem; }
+
+.pdf-modal-close{
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(56,189,248,0.08);
+    border: 1px solid rgba(56,189,248,0.2);
+    color: #94a3b8;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.pdf-modal-close:hover{
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.4);
+    color: #f87171;
+    transform: scale(1.1);
+}
+
+.pdf-modal-body{
+    flex: 1;
+    overflow: hidden;
+}
+
+.pdf-modal-body iframe{
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* [NEW] Responsive PDF modal on small screens */
+@media(max-width:600px){
+    .pdf-modal{ padding: 10px; }
+    .pdf-modal-box{ height: 95vh; border-radius: 12px; }
+    .pdf-modal-header{ padding: 10px 14px; }
+}
+
+/* =====================================================
+   LIGHT MODE — PDF Modal & Cert Lightbox
+   ===================================================== */
+body.light .pdf-modal-box{
+    background: #f8fafc;
+    border-color: rgba(56,189,248,0.3);
+}
+body.light .pdf-modal-header{
+    background: rgba(219,234,254,0.95);
+    border-bottom-color: rgba(56,189,248,0.2);
+}
+body.light .pdf-modal-close{ color: #475569; }
+
 </style>
 </head>
 
@@ -448,10 +738,40 @@ body.light .pdf-viewer-wrap{ background: #f8fafc; border-color: rgba(56,189,248,
     <a href="#contact">Contact Me</a>
 </div>
 
-<!-- ===== LIGHTBOX ===== -->
+<!-- ===== PROFILE LIGHTBOX (unchanged) ===== -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="lightbox-close" onclick="closeLightbox()">✕</span>
     <img src="صورة.jpg" alt="Profile Picture Full View" onclick="event.stopPropagation()">
+</div>
+
+<!-- =====================================================
+     [NEW] CERTIFICATE IMAGE LIGHTBOX
+     Opens when user clicks any cert thumbnail
+     ===================================================== -->
+<div class="cert-lightbox" id="certLightbox" onclick="closeCertLightbox()">
+    <div class="cert-lightbox-inner" onclick="event.stopPropagation()">
+        <span class="cert-lightbox-close" onclick="closeCertLightbox()">✕</span>
+        <img id="certLightboxImg" src="" alt="Certificate Full View">
+    </div>
+</div>
+
+<!-- =====================================================
+     [NEW] PDF MODAL
+     Opens PDF files inside the page (no new tab)
+     ===================================================== -->
+<div class="pdf-modal" id="pdfModal" onclick="closePdfModal()">
+    <div class="pdf-modal-box" onclick="event.stopPropagation()">
+        <div class="pdf-modal-header">
+            <div class="pdf-modal-title">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span id="pdfModalTitle">Certificate</span>
+            </div>
+            <div class="pdf-modal-close" onclick="closePdfModal()">✕</div>
+        </div>
+        <div class="pdf-modal-body">
+            <iframe id="pdfModalFrame" src="" title="Certificate PDF" allowfullscreen></iframe>
+        </div>
+    </div>
 </div>
 
 <!-- ===== HEADER ===== -->
@@ -527,39 +847,75 @@ body.light .pdf-viewer-wrap{ background: #f8fafc; border-color: rgba(56,189,248,
 
         <div class="cert-grid">
 
-            <!-- RS Card 1 — غيّر "rs-cert1.jpg" باسم صورة الشهادة الأولى -->
+            <!-- RS Card 1 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_1.jpg" alt="Remote Sensing Basics Certificate" class="cert-thumb">
+                <!--
+                  [NEW] onclick on image opens the cert lightbox (full-size view)
+                  data-src points to the image file
+                -->
+                <img src="شهاده مجمع(1)_1.jpg"
+                     alt="Remote Sensing Basics Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Fundamentals Of Remote Sensing')">
                 <div class="cert-body">
                     <div class="cert-title">Fundamentals Of Remote Sensing</div>
                     <div class="cert-desc">Gained foundational knowledge of remote sensing principles, satellite imagery, sensor technologies, and Earth observation applications for environmental and geographic analysis.</div>
-                    <a href="https://arset.unhosting.site/pluginfile.php/1/tool_certificate/issues/1761658403/8549859035AA.pdf" target="_blank" class="cert-verify">
-                        <i class="fa-solid fa-shield-halved"></i> Verify Certificate
-                    </a>
+                    <div class="cert-actions">
+                        <!-- [NEW] View Image button → opens lightbox -->
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده مجمع(1)_1.jpg', 'Fundamentals Of Remote Sensing')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <!-- Verify button → opens verify URL in new tab (external links stay external) -->
+                        <a href="https://arset.unhosting.site/pluginfile.php/1/tool_certificate/issues/1761658403/8549859035AA.pdf"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- RS Card 2 — غيّر "rs-cert2.jpg" باسم صورة الشهادة الثانية -->
+            <!-- RS Card 2 -->
             <div class="cert-card">
-                <img src="شهاده المستوي الاخير2.png" alt="Professional Remote Sensing Training Certificate" class="cert-thumb">
+                <img src="شهاده المستوي الاخير2.png"
+                     alt="Professional Remote Sensing Training Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Remote Sensing Professional')">
                 <div class="cert-body">
                     <div class="cert-title">Remote Sensing Professional</div>
                     <div class="cert-desc">Achieved professional-level training in remote sensing with practical assignments, focusing on advanced image analysis, spatial data extraction, and geospatial problem-solving using satellite imagery.</div>
-                    <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3" target="_blank" class="cert-verify">
-                        <i class="fa-solid fa-shield-halved"></i> Verify Certificate
-                    </a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده المستوي الاخير2.png', 'Remote Sensing Professional')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- RS Card 3 — غيّر "rs-cert3.jpg" باسم صورة الشهادة الثالثة -->
+            <!-- RS Card 3 -->
             <div class="cert-card">
-                <img src="شهاده المستوي الاخير  .png" alt="Advanced Remote Sensing Applications Certificate" class="cert-thumb">
+                <img src="شهاده المستوي الاخير  .png"
+                     alt="Advanced Remote Sensing Applications Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Remote Sensing Specialist')">
                 <div class="cert-body">
                     <div class="cert-title">Remote Sensing Specialist</div>
                     <div class="cert-desc">Completed advanced training in remote sensing concepts, satellite image interpretation, image processing techniques, and practical applications for environmental and geographic analysis.</div>
-                    <!-- ضع رابط التحقق هنا بدل # عند توفره -->
-                    <a href="https://remote-sensing-portal.com/c/?i=034bedd9-ec19-4b9a-aa59-4302a93af02f_2" target="_blank" class="cert-verify">
-<i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده المستوي الاخير  .png', 'Remote Sensing Specialist')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://remote-sensing-portal.com/c/?i=034bedd9-ec19-4b9a-aa59-4302a93af02f_2"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -577,58 +933,98 @@ body.light .pdf-viewer-wrap{ background: #f8fafc; border-color: rgba(56,189,248,
 
         <div class="cert-grid">
 
-            <!-- Esri Card 1 — غيّر "esri-cert1.jpg" باسم صورة شهادة Python for GIS -->
+            <!-- Esri Card 1 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_20.jpg" alt="Python for GIS Certificate" class="cert-thumb">
+                <img src="شهاده مجمع(1)_20.jpg"
+                     alt="Python for GIS Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Python for GIS')">
                 <div class="cert-body">
                     <div class="cert-title">Python for GIS</div>
                     <div class="cert-desc">Learned the fundamentals of Python programming and its applications in GIS workflows, automation, and spatial data processing.</div>
-                    <!-- ضع رابط التحقق هنا بدل # عند توفره -->
-                    <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3" target="_blank" class="cert-verify">
-<i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده مجمع(1)_20.jpg', 'Python for GIS')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Esri Card 2 — غيّر "esri-cert2.jpg" باسم صورة شهادة Imagery and Remote Sensing -->
+            <!-- Esri Card 2 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_5.jpg" alt="Imagery and Remote Sensing Certificate" class="cert-thumb">
+                <img src="شهاده مجمع(1)_5.jpg"
+                     alt="Imagery and Remote Sensing Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'The ArcGis Imagery MOOC Foundations And Frontiers')">
                 <div class="cert-body">
                     <div class="cert-title">The ArcGis Imagery MOOC Foundations And Frontiers</div>
                     <div class="cert-desc">Learned advanced concepts of remote sensing and imagery analysis using ArcGIS, including image interpretation, raster analytics, and extracting insights from satellite data.</div>
-                    <!-- ضع رابط التحقق هنا بدل # عند توفره -->
-                    <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb8ecd7090630896af1868/-120" target="_blank" class="cert-verify">
-<i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده مجمع(1)_5.jpg', 'The ArcGis Imagery MOOC')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb8ecd7090630896af1868/-120"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Esri Card 3 — غيّر "esri-cert3.jpg" باسم صورة شهادة Spatial Analysis -->
+            <!-- Esri Card 3 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_3.jpg" alt="Spatial Analysis Certificate" class="cert-thumb">
+                <img src="شهاده مجمع(1)_3.jpg"
+                     alt="Spatial Analysis Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Going Places With Spatial Analysis')">
                 <div class="cert-body">
                     <div class="cert-title">Going Places With Spatial Analysis</div>
                     <div class="cert-desc">Applied spatial analysis techniques to solve real-world geographic problems, including suitability modeling, pattern analysis, and location-based decision support.</div>
-                    <!-- ضع رابط التحقق هنا بدل # عند توفره -->
-                    <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb906e7090630896b06cc2/-120" target="_blank" class="cert-verify">
-<i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده مجمع(1)_3.jpg', 'Going Places With Spatial Analysis')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb906e7090630896b06cc2/-120"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Esri Card 4 — غيّر "esri-cert4.jpg" باسم صورة شهادة GIS and Climate Action -->
+            <!-- Esri Card 4 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_2.jpg" alt="GIS and Climate Action Certificate" class="cert-thumb">
+                <img src="شهاده مجمع(1)_2.jpg"
+                     alt="GIS and Climate Action Certificate"
+                     class="cert-thumb"
+                     onclick="openCertLightbox(this.src, 'Gis For Climate Action')">
                 <div class="cert-body">
                     <div class="cert-title">Gis For Climate Action</div>
                     <div class="cert-desc">Explored how GIS supports climate change mitigation and adaptation through spatial analysis, environmental monitoring, and data-driven decision-making for sustainable development.</div>
-                    <!-- ضع رابط التحقق هنا بدل # عند توفره -->
-                    <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/69a0493f2fe34a2aecd9062a/-120" target="_blank" class="cert-verify">
-<i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+                    <div class="cert-actions">
+                        <button class="cert-view-img"
+                                onclick="openCertLightbox('شهاده مجمع(1)_2.jpg', 'GIS For Climate Action')">
+                            <i class="fa-solid fa-image"></i> View Certificate
+                        </button>
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/69a0493f2fe34a2aecd9062a/-120"
+                           target="_blank" class="cert-verify">
+                            <i class="fa-solid fa-shield-halved"></i> Verify
+                        </a>
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- ── PDF Viewer ── -->
+    <!-- ── PDF Viewer (inline, unchanged) ── -->
     <div class="pdf-section">
         <div class="pdf-section-header">
             <h3><i class="fa-solid fa-file-pdf" style="margin-right:10px; color:#ef4444;"></i>Certificates Collection</h3>
@@ -659,7 +1055,9 @@ body.light .pdf-viewer-wrap{ background: #f8fafc; border-color: rgba(56,189,248,
 <footer>© 2026 Abdelrahman Saleh Helal. All Rights Reserved.</footer>
 
 <script>
-/* MENU */
+/* =====================================================
+   MENU
+   ===================================================== */
 let menu    = document.getElementById("menu");
 let overlay = document.getElementById("overlay");
 function toggleMenu(){
@@ -671,10 +1069,14 @@ overlay.onclick = closeMenu;
 window.addEventListener("scroll", closeMenu);
 document.querySelectorAll(".menu a").forEach(a=>{ a.addEventListener("click", closeMenu); });
 
-/* DARK/LIGHT MODE */
+/* =====================================================
+   DARK / LIGHT MODE
+   ===================================================== */
 function toggleMode(){ document.body.classList.toggle("light"); }
 
-/* LIGHTBOX */
+/* =====================================================
+   PROFILE PHOTO LIGHTBOX (unchanged)
+   ===================================================== */
 function openLightbox(){
     document.getElementById("lightbox").classList.add("active");
     document.body.style.overflow="hidden";
@@ -683,9 +1085,75 @@ function closeLightbox(){
     document.getElementById("lightbox").classList.remove("active");
     document.body.style.overflow="";
 }
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeLightbox(); });
 
-/* SCROLL REVEAL */
+/* =====================================================
+   [NEW] CERTIFICATE IMAGE LIGHTBOX
+   Opens any cert thumbnail at full size
+   ===================================================== */
+const certLb    = document.getElementById("certLightbox");
+const certLbImg = document.getElementById("certLightboxImg");
+
+function openCertLightbox(src, title){
+    certLbImg.src = src;
+    certLbImg.alt = title || "Certificate";
+    certLb.classList.remove("closing");
+    certLb.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeCertLightbox(){
+    certLb.classList.add("closing");
+    /* Wait for fade-out animation then hide */
+    certLb.addEventListener("animationend", function handler(){
+        certLb.classList.remove("active", "closing");
+        certLbImg.src = "";
+        document.body.style.overflow = "";
+        certLb.removeEventListener("animationend", handler);
+    });
+}
+
+/* =====================================================
+   [NEW] PDF MODAL
+   Opens a PDF file inside the page without a new tab
+   ===================================================== */
+const pdfModal      = document.getElementById("pdfModal");
+const pdfModalFrame = document.getElementById("pdfModalFrame");
+const pdfModalTitle = document.getElementById("pdfModalTitle");
+
+function openPdfModal(src, title){
+    pdfModalTitle.textContent = title || "Certificate";
+    pdfModalFrame.src = src;
+    pdfModal.classList.remove("closing");
+    pdfModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closePdfModal(){
+    pdfModal.classList.add("closing");
+    pdfModal.addEventListener("animationend", function handler(){
+        pdfModal.classList.remove("active", "closing");
+        /* Clear src to stop PDF from continuing to load */
+        pdfModalFrame.src = "";
+        document.body.style.overflow = "";
+        pdfModal.removeEventListener("animationend", handler);
+    });
+}
+
+/* =====================================================
+   KEYBOARD: ESC closes any open modal or lightbox
+   ===================================================== */
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+        /* Close in priority order */
+        if(pdfModal.classList.contains("active"))      { closePdfModal(); }
+        else if(certLb.classList.contains("active"))   { closeCertLightbox(); }
+        else if(document.getElementById("lightbox").classList.contains("active")){ closeLightbox(); }
+    }
+});
+
+/* =====================================================
+   SCROLL REVEAL — sections fade-up
+   ===================================================== */
 const revealObserver = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -693,8 +1161,46 @@ const revealObserver = new IntersectionObserver((entries)=>{
             revealObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
+
 document.querySelectorAll(".reveal").forEach(el=> revealObserver.observe(el));
+
+/* =====================================================
+   [NEW] PER-CARD STAGGER — each cert-grid is observed
+   individually so cards inside it appear one-by-one
+   with a stagger delay as they enter the viewport.
+   Works for BOTH cert-grids independently.
+   ===================================================== */
+const STAGGER_BASE  = 0.10; // seconds between each card
+const STAGGER_START = 0.05; // delay before first card
+
+const gridObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        const grid  = entry.target;
+        const cards = Array.from(grid.querySelectorAll(".cert-card"));
+
+        cards.forEach((card, i) => {
+            // Apply the stagger delay directly on the element's style
+            card.style.transitionDelay = (STAGGER_START + i * STAGGER_BASE) + "s";
+            card.classList.add("card-visible");
+        });
+
+        // After animation done, clear transitionDelay so hover still works smoothly
+        const lastDelay = (STAGGER_START + (cards.length - 1) * STAGGER_BASE + 0.7) * 1000;
+        setTimeout(() => {
+            cards.forEach(card => { card.style.transitionDelay = ""; });
+        }, lastDelay);
+
+        gridObserver.unobserve(grid);
+    });
+}, {
+    threshold: 0.12   // trigger when ~12% of the grid is visible
+});
+
+// Observe every cert-grid on the page
+document.querySelectorAll(".cert-grid").forEach(grid => gridObserver.observe(grid));
 </script>
 
 </body>
