@@ -202,374 +202,151 @@ footer{ border-top:1px solid #334155; text-align:center; padding:15px; font-size
 .reveal h2{ opacity:0; transform:translateX(-20px); transition:opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible h2{ opacity:1; transform:translateX(0); transition-delay:0s; }
 
-/* ===================================================
-   CERTIFICATES SECTION — FULL REDESIGN
-   =================================================== */
-
-/* --- Category Header --- */
-.cert-category{
-    margin-bottom: 50px;
-}
-
+/* =================================================
+   CERTIFICATES SECTION
+   =============================================== */
+.cert-category{ margin-bottom: 50px; }
 .cert-category-title{
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 28px;
-    padding-bottom: 14px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px; padding-bottom: 14px;
     border-bottom: 1px solid rgba(56,189,248,0.2);
 }
-
 .cert-category-title .cat-icon{
-    width: 44px; height: 44px;
-    border-radius: 10px;
+    width: 44px; height: 44px; border-radius: 10px;
     display: flex; align-items:center; justify-content:center;
     font-size: 20px;
     background: linear-gradient(135deg, rgba(0,245,196,0.15), rgba(56,189,248,0.15));
-    border: 1px solid rgba(0,245,196,0.3);
-    color: #00f5c4;
-    flex-shrink:0;
+    border: 1px solid rgba(0,245,196,0.3); color: #00f5c4; flex-shrink:0;
 }
-
-.cert-category-title h3{
-    font-size: 1.35rem;
-    color: #e2e8f0;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
+.cert-category-title h3{ font-size: 1.35rem; color: #e2e8f0; font-weight: 700; letter-spacing: 0.5px; }
 body.light .cert-category-title h3{ color: #0f172a; }
 
-/* --- Cards Grid --- */
 .cert-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
 }
-
 @media(max-width:1024px){ .cert-grid{ grid-template-columns: repeat(2,1fr); } }
 @media(max-width:600px) { .cert-grid{ grid-template-columns: 1fr; } }
 
-/* =====================================================
-   [NEW] CERTIFICATE CARD — Fade-Up Scroll Reveal Fix
-   Cards start hidden and animate in via JS observer
-   ===================================================== */
 .cert-card{
     background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.8));
-    border: 1px solid rgba(56,189,248,0.15);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    /* [NEW] Equal height for all cards */
-    height: 100%;
-    /* [NEW] Transition covers hover AND the fade-up reveal */
-    transition: opacity 0.65s ease, transform 0.65s ease,
-                box-shadow 0.35s ease, border-color 0.35s ease;
-    backdrop-filter: blur(6px);
-    position: relative;
-    /* [NEW] Start invisible + shifted down (fade-up state) */
-    opacity: 0;
-    transform: translateY(36px);
+    border: 1px solid rgba(56,189,248,0.15); border-radius: 16px;
+    overflow: hidden; display: flex; flex-direction: column; height: 100%;
+    transition: opacity 0.65s ease, transform 0.65s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    backdrop-filter: blur(6px); position: relative; opacity: 0; transform: translateY(36px);
 }
-
-/* [NEW] Card becomes visible when JS adds .card-visible directly on it */
-.cert-card.card-visible{
-    opacity: 1;
-    transform: translateY(0);
-}
-
+.cert-card.card-visible{ opacity: 1; transform: translateY(0); }
 .cert-card::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    border-radius:16px;
+    content:''; position:absolute; inset:0; border-radius:16px;
     background: linear-gradient(135deg, rgba(0,245,196,0.04) 0%, transparent 60%);
-    pointer-events:none;
-    /* [NEW] Smooth transition for the pseudo-element glow */
-    transition: opacity 0.35s ease;
+    pointer-events:none; transition: opacity 0.35s ease;
 }
-
-/* [NEW] Professional hover: lift + shadow + subtle scale */
 .cert-card:hover{
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 20px 50px rgba(0,245,196,0.18), 0 6px 20px rgba(0,0,0,0.5);
     border-color: rgba(0,245,196,0.45);
 }
-
-/* [NEW] Brighter inner glow on hover */
-.cert-card:hover::before{
-    opacity: 2.5;
-}
-
-/* [NEW] Respect user preference for reduced motion */
+.cert-card:hover::before{ opacity: 2.5; }
 @media (prefers-reduced-motion: reduce) {
-    .cert-card{
-        transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        transform: none !important;
-    }
+    .cert-card{ transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; transform: none !important; }
     .cert-card:hover{ transform: none !important; }
-    .reveal.visible .cert-card{ transform: none; }
 }
 
-/* =====================================================
-   [NEW] CERTIFICATE THUMBNAIL — Uniform sizing
-   object-fit: contain so the full cert is always visible
-   ===================================================== */
 .cert-thumb{
-    width: 100%;
-    /* [NEW] Slightly taller frame so portrait certs show fully */
-    height: 200px;
-    /* [NEW] contain = full cert visible, no cropping */
-    object-fit: contain;
-    display: block;
-    /* [NEW] Dark background behind the image area */
+    width: 100%; height: 200px; object-fit: contain; display: block;
     background: linear-gradient(135deg, #0a1628, #0d2040);
     border-bottom: 1px solid rgba(56,189,248,0.12);
-    /* [NEW] Small padding so cert doesn't touch the card edges */
-    padding: 10px;
-    box-sizing: border-box;
-    /* [NEW] Cursor indicates clickable */
-    cursor: zoom-in;
-    transition: opacity 0.3s ease;
+    padding: 10px; box-sizing: border-box; cursor: zoom-in; transition: opacity 0.3s ease;
 }
-
-.cert-thumb:hover{
-    opacity: 0.85;
-}
-
-/* placeholder when no real image */
+.cert-thumb:hover{ opacity: 0.85; }
 .cert-thumb-placeholder{
-    width: 100%;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #0a1628, #102040);
-    font-size: 48px;
-    color: rgba(0,245,196,0.25);
+    font-size: 48px; color: rgba(0,245,196,0.25);
     border-bottom: 1px solid rgba(56,189,248,0.1);
 }
-
-.cert-body{
-    padding: 18px 18px 20px;
-    display: flex;
-    flex-direction: column;
-    flex:1;
-    gap: 10px;
-}
-
-.cert-title{
-    font-size: 1rem;
-    font-weight: 700;
-    color: #38bdf8;
-    line-height: 1.4;
-}
-
-.cert-desc{
-    font-size: 0.84rem;
-    color: #94a3b8;
-    line-height: 1.6;
-    flex:1;
-}
-
+.cert-body{ padding: 18px 18px 20px; display: flex; flex-direction: column; flex:1; gap: 10px; }
+.cert-title{ font-size: 1rem; font-weight: 700; color: #38bdf8; line-height: 1.4; }
+.cert-desc{ font-size: 0.84rem; color: #94a3b8; line-height: 1.6; flex:1; }
 body.light .cert-desc{ color: #475569; }
-
-/* [NEW] Button row — holds both Verify and View Image buttons */
-.cert-actions{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 6px;
-}
-
+.cert-actions{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .cert-verify{
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 14px;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.4px;
-    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.4px; transition: all 0.3s ease;
     background: linear-gradient(135deg, rgba(0,245,196,0.12), rgba(56,189,248,0.12));
-    border: 1px solid rgba(0,245,196,0.3);
-    color: #00f5c4;
-    cursor: pointer;
+    border: 1px solid rgba(0,245,196,0.3); color: #00f5c4; cursor: pointer;
 }
-
 .cert-verify:hover{
     background: linear-gradient(135deg, rgba(0,245,196,0.25), rgba(56,189,248,0.2));
-    border-color: rgba(0,245,196,0.6);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,245,196,0.2);
-    color: #00f5c4;
+    border-color: rgba(0,245,196,0.6); transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,245,196,0.2); color: #00f5c4;
 }
-
-.cert-verify.no-link{
-    opacity: 0.45;
-    cursor: default;
-    pointer-events: none;
-}
-
-/* [NEW] View Image button — secondary style */
+.cert-verify.no-link{ opacity: 0.45; cursor: default; pointer-events: none; }
 .cert-view-img{
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 14px;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.4px;
-    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.4px; transition: all 0.3s ease;
     background: linear-gradient(135deg, rgba(56,189,248,0.10), rgba(14,165,233,0.10));
-    border: 1px solid rgba(56,189,248,0.25);
-    color: #38bdf8;
-    cursor: pointer;
+    border: 1px solid rgba(56,189,248,0.25); color: #38bdf8; cursor: pointer;
 }
-
 .cert-view-img:hover{
     background: linear-gradient(135deg, rgba(56,189,248,0.22), rgba(14,165,233,0.18));
-    border-color: rgba(56,189,248,0.55);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(56,189,248,0.18);
-    color: #38bdf8;
+    border-color: rgba(56,189,248,0.55); transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(56,189,248,0.18); color: #38bdf8;
 }
 
-/* --- PDF Viewer (scroll-within section) --- */
-.pdf-section{
-    margin-top: 55px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(56,189,248,0.15);
-}
+.pdf-section{ margin-top: 55px; padding-top: 40px; border-top: 1px solid rgba(56,189,248,0.15); }
+.pdf-section-header{ text-align: center; margin-bottom: 28px; }
+.pdf-section-header h3{ font-size: 1.5rem; color: #38bdf8; margin-bottom: 8px; }
+.pdf-section-header p{ font-size: 0.9rem; color: #64748b; }
 
-.pdf-section-header{
-    text-align: center;
-    margin-bottom: 28px;
-}
-
-.pdf-section-header h3{
-    font-size: 1.5rem;
-    color: #38bdf8;
-    margin-bottom: 8px;
-}
-
-.pdf-section-header p{
-    font-size: 0.9rem;
-    color: #64748b;
-}
-
-/* light mode cert cards */
 body.light .cert-card{
     background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(241,245,249,0.9));
     border-color: rgba(56,189,248,0.25);
 }
-body.light .cert-thumb{
-    background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-}
-body.light .cert-thumb-placeholder{
-    background: linear-gradient(135deg, #dbeafe, #e0f2fe);
-    color: rgba(14,165,233,0.3);
-}
+body.light .cert-thumb{ background: linear-gradient(135deg, #dbeafe, #e0f2fe); }
+body.light .cert-thumb-placeholder{ background: linear-gradient(135deg, #dbeafe, #e0f2fe); color: rgba(14,165,233,0.3); }
 body.light .cert-title{ color: #0369a1; }
 body.light .cert-verify{ color: #0369a1; border-color: rgba(14,165,233,0.4); background: rgba(14,165,233,0.08); }
 body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); background: rgba(14,165,233,0.06); }
 
-/* =====================================================
-   [NEW] CERTIFICATE IMAGE LIGHTBOX
-   Opens cert image full-size over the page
-   ===================================================== */
+/* =================================================
+   CERTIFICATE IMAGE LIGHTBOX
+   =============================================== */
 .cert-lightbox{
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.92);
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    cursor: zoom-out;
-    /* [NEW] Fade-in animation */
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92); z-index: 10000;
+    justify-content: center; align-items: center; cursor: zoom-out;
     animation: certLbFadeIn 0.3s ease forwards;
 }
-
 .cert-lightbox.active{ display: flex; }
-
-@keyframes certLbFadeIn{
-    from{ opacity: 0; }
-    to  { opacity: 1; }
-}
-
-/* [NEW] Closing fade-out */
-.cert-lightbox.closing{
-    animation: certLbFadeOut 0.25s ease forwards;
-}
-
-@keyframes certLbFadeOut{
-    from{ opacity: 1; }
-    to  { opacity: 0; }
-}
-
+@keyframes certLbFadeIn{ from{ opacity: 0; } to{ opacity: 1; } }
+.cert-lightbox.closing{ animation: certLbFadeOut 0.25s ease forwards; }
+@keyframes certLbFadeOut{ from{ opacity: 1; } to{ opacity: 0; } }
 .cert-lightbox-inner{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 92vw;
-    max-height: 92vh;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    max-width: 92vw; max-height: 92vh;
 }
-
 .cert-lightbox img{
-    max-width: 90vw;
-    max-height: 88vh;
-    object-fit: contain;
-    border-radius: 14px;
-    border: 3px solid rgba(0,245,196,0.5);
+    max-width: 90vw; max-height: 88vh; object-fit: contain;
+    border-radius: 14px; border: 3px solid rgba(0,245,196,0.5);
     box-shadow: 0 0 60px rgba(0,245,196,0.25), 0 0 120px rgba(56,189,248,0.1);
-    /* [NEW] Zoom-in entrance */
-    animation: certImgZoom 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
-    cursor: default;
+    animation: certImgZoom 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; cursor: default;
 }
-
-@keyframes certImgZoom{
-    from{ transform: scale(0.65); opacity: 0; }
-    to  { transform: scale(1);    opacity: 1; }
-}
-
+@keyframes certImgZoom{ from{ transform: scale(0.65); opacity: 0; } to{ transform: scale(1); opacity: 1; } }
 .cert-lightbox-close{
-    position: absolute;
-    top: -18px;
-    right: -18px;
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: rgba(15,23,42,0.9);
-    border: 2px solid rgba(0,245,196,0.5);
-    color: #00f5c4;
-    font-size: 20px;
-    line-height: 34px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    z-index: 10001;
-    user-select: none;
+    position: absolute; top: -18px; right: -18px; width: 38px; height: 38px;
+    border-radius: 50%; background: rgba(15,23,42,0.9); border: 2px solid rgba(0,245,196,0.5);
+    color: #00f5c4; font-size: 20px; line-height: 34px; text-align: center;
+    cursor: pointer; transition: all 0.25s ease; z-index: 10001; user-select: none;
 }
+.cert-lightbox-close:hover{ background: rgba(0,245,196,0.2); border-color: #00f5c4; transform: scale(1.15); }
 
-.cert-lightbox-close:hover{
-    background: rgba(0,245,196,0.2);
-    border-color: #00f5c4;
-    transform: scale(1.15);
-}
+/* =================================================
+   PDF.js SINGLE-PAGE VIEWER  ← كل التعديلات هنا
+   =============================================== */
 
-/* =====================================================
-   PDF.js INLINE VIEWER — Certificates Collection
-   No iframe / embed / object — pure canvas rendering
-   ===================================================== */
-
-/* --- Wrapper card that matches site style --- */
+/* Wrapper card */
 .pdfjs-viewer-wrap{
     border-radius: 16px;
     overflow: hidden;
@@ -578,198 +355,111 @@ body.light .cert-view-img{ color: #0369a1; border-color: rgba(14,165,233,0.3); b
     background: #070e1a;
     display: flex;
     flex-direction: column;
+    /* ارتفاع ثابت للـ Viewer */
     height: 88vh;
     max-height: 88vh;
 }
 
-/* --- Toolbar --- */
+/* Toolbar — لم يتغير */
 .pdfjs-toolbar{
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 14px;
-    background: #0f1e35;
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 14px; background: #0f1e35;
     border-bottom: 1px solid rgba(56,189,248,0.15);
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    user-select: none;
+    flex-wrap: wrap; flex-shrink: 0; user-select: none;
 }
-
-/* toolbar label */
 .pdfjs-toolbar-label{
-    font-size: 0.78rem;
-    color: #38bdf8;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-right: 4px;
-    flex-shrink: 0;
+    font-size: 0.78rem; color: #38bdf8; font-weight: 700;
+    display: flex; align-items: center; gap: 7px; margin-right: 4px; flex-shrink: 0;
 }
 .pdfjs-toolbar-label i{ color: #ef4444; }
-
-/* divider */
-.pdfjs-sep{
-    width: 1px;
-    height: 22px;
-    background: rgba(56,189,248,0.18);
-    margin: 0 4px;
-    flex-shrink: 0;
-}
-
-/* all toolbar buttons */
+.pdfjs-sep{ width: 1px; height: 22px; background: rgba(56,189,248,0.18); margin: 0 4px; flex-shrink: 0; }
 .pdfjs-btn{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 6px 11px;
-    border-radius: 7px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid rgba(56,189,248,0.2);
-    background: rgba(56,189,248,0.07);
-    color: #94a3b8;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 6px 11px; border-radius: 7px; font-size: 0.78rem; font-weight: 600;
+    cursor: pointer; border: 1px solid rgba(56,189,248,0.2);
+    background: rgba(56,189,248,0.07); color: #94a3b8; transition: all 0.2s ease;
+    flex-shrink: 0; white-space: nowrap;
 }
-.pdfjs-btn:hover:not(:disabled){
-    background: rgba(56,189,248,0.18);
-    border-color: rgba(56,189,248,0.45);
-    color: #e2e8f0;
-}
-.pdfjs-btn:disabled{
-    opacity: 0.35;
-    cursor: default;
-}
+.pdfjs-btn:hover:not(:disabled){ background: rgba(56,189,248,0.18); border-color: rgba(56,189,248,0.45); color: #e2e8f0; }
+.pdfjs-btn:disabled{ opacity: 0.35; cursor: default; }
 .pdfjs-btn i{ font-size: 0.82rem; }
-
-/* page counter */
-.pdfjs-page-info{
-    font-size: 0.8rem;
-    color: #64748b;
-    white-space: nowrap;
-    flex-shrink: 0;
-    padding: 0 4px;
-}
-.pdfjs-page-info span{
-    color: #38bdf8;
-    font-weight: 700;
-}
-
-/* zoom select */
+.pdfjs-page-info{ font-size: 0.8rem; color: #64748b; white-space: nowrap; flex-shrink: 0; padding: 0 4px; }
+.pdfjs-page-info span{ color: #38bdf8; font-weight: 700; }
 .pdfjs-zoom-select{
-    padding: 5px 8px;
-    border-radius: 7px;
-    border: 1px solid rgba(56,189,248,0.2);
-    background: rgba(15,30,53,0.95);
-    color: #94a3b8;
-    font-size: 0.78rem;
-    cursor: pointer;
-    outline: none;
-    flex-shrink: 0;
+    padding: 5px 8px; border-radius: 7px; border: 1px solid rgba(56,189,248,0.2);
+    background: rgba(15,30,53,0.95); color: #94a3b8; font-size: 0.78rem;
+    cursor: pointer; outline: none; flex-shrink: 0;
 }
 .pdfjs-zoom-select:focus{ border-color: rgba(56,189,248,0.5); color: #e2e8f0; }
-
-/* push remaining items to the right */
 .pdfjs-spacer{ flex: 1; }
-
-/* loading indicator inside toolbar */
-.pdfjs-loading{
-    font-size: 0.75rem;
-    color: #00f5c4;
-    animation: pdfPulse 1.2s ease infinite;
-}
+.pdfjs-loading{ font-size: 0.75rem; color: #00f5c4; animation: pdfPulse 1.2s ease infinite; }
 @keyframes pdfPulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
 
-/* --- Canvas scroll area --- */
+/* ─────────────────────────────────────────────────
+   منطقة عرض الصفحة الواحدة (Single Page Canvas)
+   يعرض canvas واحد فقط في كل مرة، مع overflow
+   للتمرير داخل الصفحة عند التكبير فقط.
+   ───────────────────────────────────────────────── */
 .pdfjs-canvas-area{
-    overflow-y: auto;
-    overflow-x: auto;
     flex: 1;
-    /* prevents flex child from growing beyond wrapper */
-    min-height: 0;
+    min-height: 0;            /* مهم لـ flex */
+    overflow: auto;           /* تمرير داخل الصفحة الحالية فقط عند التكبير */
     background: #111827;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: flex-start;  /* يتيح التمرير العمودي عند التكبير */
+    justify-content: center;
     padding: 20px 16px;
-    gap: 16px;
-    /* Custom scrollbar to match site theme */
+    /* Scrollbar مطابق للتصميم الأصلي */
     scrollbar-width: thin;
     scrollbar-color: rgba(56,189,248,0.35) rgba(15,23,42,0.5);
+    /* انتقال سلس عند تغيير الصفحة */
+    position: relative;
 }
-.pdfjs-canvas-area::-webkit-scrollbar{ width: 8px; }
+.pdfjs-canvas-area::-webkit-scrollbar{ width: 8px; height: 8px; }
 .pdfjs-canvas-area::-webkit-scrollbar-track{ background: rgba(15,23,42,0.5); border-radius: 4px; }
 .pdfjs-canvas-area::-webkit-scrollbar-thumb{ background: rgba(56,189,248,0.35); border-radius: 4px; }
 .pdfjs-canvas-area::-webkit-scrollbar-thumb:hover{ background: rgba(56,189,248,0.6); }
 
-/* individual page canvas wrapper */
-.pdfjs-page-wrap{
-    position: relative;
-    flex-shrink: 0;
+/* Canvas wrapper — يُنشأ مرة واحدة ويُعاد الرسم عليه */
+#pdfjsPageWrap{
+    flex-shrink: 0;           /* لا ينكمش عند التكبير */
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     background: white;
-    /* page number badge */
+    /* انتقال Fade بين الصفحات */
+    transition: opacity 0.25s ease;
 }
-.pdfjs-page-wrap canvas{
-    display: block;
-}
+#pdfjsPageWrap.fading{ opacity: 0; }
 
-/* loading spinner placeholder per page */
+/* رسالة التحميل */
 .pdfjs-page-loading{
-    width: 100%;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #38bdf8;
-    font-size: 0.85rem;
-    background: #0f172a;
-    border-radius: 8px;
+    width: 100%; min-height: 200px; display: flex; align-items: center;
+    justify-content: center; color: #38bdf8; font-size: 0.85rem;
+    background: #0f172a; border-radius: 8px;
 }
-
-/* error message */
 .pdfjs-error{
-    padding: 30px;
-    text-align: center;
-    color: #f87171;
-    font-size: 0.9rem;
+    padding: 30px; text-align: center; color: #f87171; font-size: 0.9rem;
 }
 .pdfjs-error i{ font-size: 2rem; margin-bottom: 12px; display: block; }
 
-/* responsive */
+/* Responsive */
 @media(max-width:600px){
     .pdfjs-viewer-wrap{ height: 80vh; max-height: 80vh; }
-    .pdfjs-canvas-area{ padding: 12px 8px; gap: 10px; }
+    .pdfjs-canvas-area{ padding: 12px 8px; }
     .pdfjs-toolbar{ gap: 4px; padding: 8px 10px; }
     .pdfjs-btn{ padding: 5px 8px; font-size: 0.72rem; }
     .pdfjs-zoom-select{ padding: 4px 6px; }
 }
 
-/* light mode */
-body.light .pdfjs-viewer-wrap{
-    background: #f0f4f8;
-    border-color: rgba(56,189,248,0.3);
-}
-body.light .pdfjs-toolbar{
-    background: #dbeafe;
-    border-bottom-color: rgba(56,189,248,0.2);
-}
+/* Light mode */
+body.light .pdfjs-viewer-wrap{ background: #f0f4f8; border-color: rgba(56,189,248,0.3); }
+body.light .pdfjs-toolbar{ background: #dbeafe; border-bottom-color: rgba(56,189,248,0.2); }
 body.light .pdfjs-canvas-area{ background: #e2e8f0; }
 body.light .pdfjs-btn{ background: rgba(14,165,233,0.08); color: #334155; }
 body.light .pdfjs-btn:hover:not(:disabled){ background: rgba(14,165,233,0.2); color: #0f172a; }
 body.light .pdfjs-zoom-select{ background: white; color: #334155; }
 body.light .pdfjs-page-info{ color: #475569; }
-
-/* =====================================================
-   LIGHT MODE — Cert Lightbox (unchanged)
-   ===================================================== */
-
 </style>
 </head>
 
@@ -787,10 +477,7 @@ body.light .pdfjs-page-info{ color: #475569; }
     </div>
 </div>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay"></div>
-
-<!-- MENU -->
 <div class="menu" id="menu">
     <a href="#about">About Me</a>
     <a href="#skills">Skills</a>
@@ -799,25 +486,19 @@ body.light .pdfjs-page-info{ color: #475569; }
     <a href="#contact">Contact Me</a>
 </div>
 
-<!-- ===== PROFILE LIGHTBOX (unchanged) ===== -->
+<!-- Profile Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span class="lightbox-close" onclick="closeLightbox()">✕</span>
     <img src="صورة.jpg" alt="Profile Picture Full View" onclick="event.stopPropagation()">
 </div>
 
-<!-- =====================================================
-     [NEW] CERTIFICATE IMAGE LIGHTBOX
-     Opens when user clicks any cert thumbnail
-     ===================================================== -->
+<!-- Certificate Image Lightbox -->
 <div class="cert-lightbox" id="certLightbox" onclick="closeCertLightbox()">
     <div class="cert-lightbox-inner" onclick="event.stopPropagation()">
         <span class="cert-lightbox-close" onclick="closeCertLightbox()">✕</span>
         <img id="certLightboxImg" src="" alt="Certificate Full View">
     </div>
 </div>
-
-
-
 
 <!-- ===== HEADER ===== -->
 <header>
@@ -883,91 +564,65 @@ body.light .pdfjs-page-info{ color: #475569; }
 <section id="certificates" class="reveal">
     <h2>Certificates</h2>
 
-    <!-- ── Category 1: Remote Sensing ── -->
+    <!-- Category 1: Remote Sensing -->
     <div class="cert-category">
         <div class="cert-category-title">
             <div class="cat-icon"><i class="fa-solid fa-satellite"></i></div>
             <h3>Remote Sensing Certificates</h3>
         </div>
-
         <div class="cert-grid">
-
-            <!-- RS Card 1 -->
             <div class="cert-card">
-                <!--
-                  [NEW] onclick on image opens the cert lightbox (full-size view)
-                  data-src points to the image file
-                -->
-                <img src="شهاده مجمع(1)_1.jpg"
-                     alt="Remote Sensing Basics Certificate"
-                     class="cert-thumb"
+                <img src="شهاده مجمع(1)_1.jpg" alt="Remote Sensing Basics Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Fundamentals Of Remote Sensing')">
                 <div class="cert-body">
                     <div class="cert-title">Fundamentals Of Remote Sensing</div>
                     <div class="cert-desc">Gained foundational knowledge of remote sensing principles, satellite imagery, sensor technologies, and Earth observation applications for environmental and geographic analysis.</div>
                     <div class="cert-actions">
-                        <!-- [NEW] View Image button → opens lightbox -->
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده مجمع(1)_1.jpg', 'Fundamentals Of Remote Sensing')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده مجمع(1)_1.jpg', 'Fundamentals Of Remote Sensing')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <!-- Verify button → opens verify URL in new tab (external links stay external) -->
-                        <a href="https://arset.unhosting.site/pluginfile.php/1/tool_certificate/issues/1761658403/8549859035AA.pdf"
-                           target="_blank" class="cert-verify">
+                        <a href="https://arset.unhosting.site/pluginfile.php/1/tool_certificate/issues/1761658403/8549859035AA.pdf" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- RS Card 2 -->
             <div class="cert-card">
-                <img src="شهاده المستوي الاخير2.png"
-                     alt="Professional Remote Sensing Training Certificate"
-                     class="cert-thumb"
+                <img src="شهاده المستوي الاخير2.png" alt="Professional Remote Sensing Training Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Remote Sensing Professional')">
                 <div class="cert-body">
                     <div class="cert-title">Remote Sensing Professional</div>
                     <div class="cert-desc">Achieved professional-level training in remote sensing with practical assignments, focusing on advanced image analysis, spatial data extraction, and geospatial problem-solving using satellite imagery.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده المستوي الاخير2.png', 'Remote Sensing Professional')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده المستوي الاخير2.png', 'Remote Sensing Professional')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3"
-                           target="_blank" class="cert-verify">
+                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- RS Card 3 -->
             <div class="cert-card">
-                <img src="شهاده المستوي الاخير  .png"
-                     alt="Advanced Remote Sensing Applications Certificate"
-                     class="cert-thumb"
+                <img src="شهاده المستوي الاخير  .png" alt="Advanced Remote Sensing Applications Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Remote Sensing Specialist')">
                 <div class="cert-body">
                     <div class="cert-title">Remote Sensing Specialist</div>
                     <div class="cert-desc">Completed advanced training in remote sensing concepts, satellite image interpretation, image processing techniques, and practical applications for environmental and geographic analysis.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده المستوي الاخير  .png', 'Remote Sensing Specialist')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده المستوي الاخير  .png', 'Remote Sensing Specialist')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://remote-sensing-portal.com/c/?i=034bedd9-ec19-4b9a-aa59-4302a93af02f_2"
-                           target="_blank" class="cert-verify">
+                        <a href="https://remote-sensing-portal.com/c/?i=034bedd9-ec19-4b9a-aa59-4302a93af02f_2" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ── Category 2: Esri ── -->
+    <!-- Category 2: Esri -->
     <div class="cert-category">
         <div class="cert-category-title">
             <div class="cat-icon" style="color:#38bdf8; border-color:rgba(56,189,248,0.3); background:linear-gradient(135deg,rgba(56,189,248,0.12),rgba(14,165,233,0.12));">
@@ -975,130 +630,98 @@ body.light .pdfjs-page-info{ color: #475569; }
             </div>
             <h3>Esri GIS Certifications</h3>
         </div>
-
         <div class="cert-grid">
-
-            <!-- Esri Card 1 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_20.jpg"
-                     alt="Python for GIS Certificate"
-                     class="cert-thumb"
+                <img src="شهاده مجمع(1)_20.jpg" alt="Python for GIS Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Python for GIS')">
                 <div class="cert-body">
                     <div class="cert-title">Python for GIS</div>
                     <div class="cert-desc">Learned the fundamentals of Python programming and its applications in GIS workflows, automation, and spatial data processing.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده مجمع(1)_20.jpg', 'Python for GIS')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده مجمع(1)_20.jpg', 'Python for GIS')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3"
-                           target="_blank" class="cert-verify">
+                        <a href="https://remote-sensing-portal.com/c/?i=1bc47c76-02ed-4af7-b0c5-3ff24bfdafb3_3" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Esri Card 2 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_5.jpg"
-                     alt="Imagery and Remote Sensing Certificate"
-                     class="cert-thumb"
+                <img src="شهاده مجمع(1)_5.jpg" alt="Imagery and Remote Sensing Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'The ArcGis Imagery MOOC Foundations And Frontiers')">
                 <div class="cert-body">
                     <div class="cert-title">The ArcGis Imagery MOOC Foundations And Frontiers</div>
                     <div class="cert-desc">Learned advanced concepts of remote sensing and imagery analysis using ArcGIS, including image interpretation, raster analytics, and extracting insights from satellite data.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده مجمع(1)_5.jpg', 'The ArcGis Imagery MOOC')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده مجمع(1)_5.jpg', 'The ArcGis Imagery MOOC')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb8ecd7090630896af1868/-120"
-                           target="_blank" class="cert-verify">
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb8ecd7090630896af1868/-120" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Esri Card 3 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_3.jpg"
-                     alt="Spatial Analysis Certificate"
-                     class="cert-thumb"
+                <img src="شهاده مجمع(1)_3.jpg" alt="Spatial Analysis Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Going Places With Spatial Analysis')">
                 <div class="cert-body">
                     <div class="cert-title">Going Places With Spatial Analysis</div>
                     <div class="cert-desc">Applied spatial analysis techniques to solve real-world geographic problems, including suitability modeling, pattern analysis, and location-based decision support.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده مجمع(1)_3.jpg', 'Going Places With Spatial Analysis')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده مجمع(1)_3.jpg', 'Going Places With Spatial Analysis')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb906e7090630896b06cc2/-120"
-                           target="_blank" class="cert-verify">
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/68fb906e7090630896b06cc2/-120" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Esri Card 4 -->
             <div class="cert-card">
-                <img src="شهاده مجمع(1)_2.jpg"
-                     alt="GIS and Climate Action Certificate"
-                     class="cert-thumb"
+                <img src="شهاده مجمع(1)_2.jpg" alt="GIS and Climate Action Certificate" class="cert-thumb"
                      onclick="openCertLightbox(this.src, 'Gis For Climate Action')">
                 <div class="cert-body">
                     <div class="cert-title">Gis For Climate Action</div>
                     <div class="cert-desc">Explored how GIS supports climate change mitigation and adaptation through spatial analysis, environmental monitoring, and data-driven decision-making for sustainable development.</div>
                     <div class="cert-actions">
-                        <button class="cert-view-img"
-                                onclick="openCertLightbox('شهاده مجمع(1)_2.jpg', 'GIS For Climate Action')">
+                        <button class="cert-view-img" onclick="openCertLightbox('شهاده مجمع(1)_2.jpg', 'GIS For Climate Action')">
                             <i class="fa-solid fa-image"></i> View Certificate
                         </button>
-                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/69a0493f2fe34a2aecd9062a/-120"
-                           target="_blank" class="cert-verify">
+                        <a href="https://www.esri.com/training/TrainingRecord/Certificate/AbdelrhmanSaleh/69a0493f2fe34a2aecd9062a/-120" target="_blank" class="cert-verify">
                             <i class="fa-solid fa-shield-halved"></i> Verify
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ── PDF.js Inline Viewer ── -->
+    <!-- PDF Viewer Section -->
     <div class="pdf-section">
         <div class="pdf-section-header">
             <h3><i class="fa-solid fa-file-pdf" style="margin-right:10px; color:#ef4444;"></i>Certificates Collection</h3>
-            <p>Browse all certificates in a single document.</p>
+            <p>Browse all certificates — one page at a time.</p>
         </div>
 
-        <!-- PDF.js Viewer Card -->
         <div class="pdfjs-viewer-wrap" id="pdfjsViewerWrap">
 
             <!-- Toolbar -->
             <div class="pdfjs-toolbar" id="pdfjsToolbar">
-
-                <!-- Label -->
                 <div class="pdfjs-toolbar-label">
                     <i class="fa-solid fa-file-pdf"></i>
                     Certificates Collection
                 </div>
-
                 <div class="pdfjs-sep"></div>
 
                 <!-- Navigation -->
                 <button class="pdfjs-btn" id="pdfjsPrev" onclick="pdfjsGoPage(-1)" disabled title="Previous Page">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
-
                 <div class="pdfjs-page-info">
                     Page <span id="pdfjsCurrentPage">–</span> / <span id="pdfjsTotalPages">–</span>
                 </div>
-
                 <button class="pdfjs-btn" id="pdfjsNext" onclick="pdfjsGoPage(1)" disabled title="Next Page">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
@@ -1109,7 +732,6 @@ body.light .pdfjs-page-info{ color: #475569; }
                 <button class="pdfjs-btn" id="pdfjsZoomOut" onclick="pdfjsZoom(-0.25)" disabled title="Zoom Out">
                     <i class="fa-solid fa-magnifying-glass-minus"></i>
                 </button>
-
                 <select class="pdfjs-zoom-select" id="pdfjsZoomSelect" onchange="pdfjsSetZoom(this.value)" disabled>
                     <option value="0.5">50%</option>
                     <option value="0.75">75%</option>
@@ -1121,14 +743,12 @@ body.light .pdfjs-page-info{ color: #475569; }
                     <option value="fitWidth">Fit Width</option>
                     <option value="fitPage">Fit Page</option>
                 </select>
-
                 <button class="pdfjs-btn" id="pdfjsZoomIn" onclick="pdfjsZoom(0.25)" disabled title="Zoom In">
                     <i class="fa-solid fa-magnifying-glass-plus"></i>
                 </button>
 
                 <div class="pdfjs-sep"></div>
 
-                <!-- Fit buttons -->
                 <button class="pdfjs-btn" id="pdfjsFitWidth" onclick="pdfjsSetZoom('fitWidth')" disabled title="Fit Width">
                     <i class="fa-solid fa-arrows-left-right"></i>
                 </button>
@@ -1138,18 +758,19 @@ body.light .pdfjs-page-info{ color: #475569; }
 
                 <div class="pdfjs-spacer"></div>
 
-                <!-- Loading indicator (hidden once loaded) -->
                 <div class="pdfjs-loading" id="pdfjsLoadingIndicator">
                     <i class="fa-solid fa-spinner fa-spin"></i> Loading…
                 </div>
             </div>
 
-            <!-- Canvas scroll area — all pages rendered here -->
+            <!-- ─── Single Page Canvas Area ─── -->
             <div class="pdfjs-canvas-area" id="pdfjsCanvasArea">
-                <div class="pdfjs-page-loading" id="pdfjsInitMsg">
-                    <div style="text-align:center">
-                        <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:#38bdf8;display:block;margin-bottom:14px;"></i>
-                        Initializing PDF viewer…
+                <div id="pdfjsPageWrap">
+                    <div class="pdfjs-page-loading" id="pdfjsInitMsg">
+                        <div style="text-align:center">
+                            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:#38bdf8;display:block;margin-bottom:14px;"></i>
+                            Initializing PDF viewer…
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1173,9 +794,7 @@ body.light .pdfjs-page-info{ color: #475569; }
 <footer>© 2026 Abdelrahman Saleh Helal. All Rights Reserved.</footer>
 
 <script>
-/* =====================================================
-   MENU
-   ===================================================== */
+/* ── MENU ── */
 let menu    = document.getElementById("menu");
 let overlay = document.getElementById("overlay");
 function toggleMenu(){
@@ -1187,14 +806,10 @@ overlay.onclick = closeMenu;
 window.addEventListener("scroll", closeMenu);
 document.querySelectorAll(".menu a").forEach(a=>{ a.addEventListener("click", closeMenu); });
 
-/* =====================================================
-   DARK / LIGHT MODE
-   ===================================================== */
+/* ── DARK / LIGHT MODE ── */
 function toggleMode(){ document.body.classList.toggle("light"); }
 
-/* =====================================================
-   PROFILE PHOTO LIGHTBOX (unchanged)
-   ===================================================== */
+/* ── PROFILE LIGHTBOX ── */
 function openLightbox(){
     document.getElementById("lightbox").classList.add("active");
     document.body.style.overflow="hidden";
@@ -1204,13 +819,9 @@ function closeLightbox(){
     document.body.style.overflow="";
 }
 
-/* =====================================================
-   [NEW] CERTIFICATE IMAGE LIGHTBOX
-   Opens any cert thumbnail at full size
-   ===================================================== */
+/* ── CERTIFICATE IMAGE LIGHTBOX ── */
 const certLb    = document.getElementById("certLightbox");
 const certLbImg = document.getElementById("certLightboxImg");
-
 function openCertLightbox(src, title){
     certLbImg.src = src;
     certLbImg.alt = title || "Certificate";
@@ -1218,10 +829,8 @@ function openCertLightbox(src, title){
     certLb.classList.add("active");
     document.body.style.overflow = "hidden";
 }
-
 function closeCertLightbox(){
     certLb.classList.add("closing");
-    /* Wait for fade-out animation then hide */
     certLb.addEventListener("animationend", function handler(){
         certLb.classList.remove("active", "closing");
         certLbImg.src = "";
@@ -1230,24 +839,23 @@ function closeCertLightbox(){
     });
 }
 
-/* =====================================================
-   [NEW] PDF.js INLINE VIEWER ENGINE
-   Uses Mozilla PDF.js via CDN (no iframe/embed/object)
-   Works 100% on GitHub Pages — no backend required
-   ===================================================== */
+/* ==========================================================
+   PDF.js SINGLE PAGE VIEWER ENGINE
+   يعرض صفحة واحدة فقط في كل مرة — مثل Adobe Acrobat
+   ========================================================== */
 
-/* --- State --- */
-const PDFJS_CDN  = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+const PDFJS_CDN    = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
 const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-const PDF_FILE   = 'شهاده مجمع.pdf';   // ← your PDF file name
+const PDF_FILE     = 'شهاده مجمع.pdf';
 
-let pdfjsLib     = null;   // the PDF.js library object
-let pdfDoc       = null;   // loaded PDF document
-let pdfScale     = 1.0;    // current zoom scale
-let renderQueue  = [];     // render tasks to cancel on re-render
-let pdfReady     = false;
+let pdfjsLib      = null;
+let pdfDoc        = null;
+let pdfScale      = 'fitWidth';   /* الوضع الافتراضي */
+let currentPage   = 1;
+let pdfReady      = false;
+let renderTask    = null;         /* المهمة الجارية — نلغيها قبل الرسم الجديد */
 
-/* --- Load PDF.js script dynamically --- */
+/* ── تحميل مكتبة PDF.js ── */
 function pdfjsLoadScript(){
     return new Promise((resolve, reject) => {
         if(window.pdfjsLib){ resolve(window.pdfjsLib); return; }
@@ -1262,106 +870,113 @@ function pdfjsLoadScript(){
     });
 }
 
-/* --- Compute scale for fit modes --- */
-function pdfjsComputeScale(page, mode){
-    const area   = document.getElementById('pdfjsCanvasArea');
-    const vp0    = page.getViewport({ scale: 1 });
-    const aW     = area.clientWidth  - 32;   // padding
-    const aH     = area.clientHeight - 32;
-    if(mode === 'fitWidth') return aW / vp0.width;
-    if(mode === 'fitPage')  return Math.min(aW / vp0.width, aH / vp0.height);
-    return parseFloat(mode);
+/* ── حساب مقياس التكبير لوضعَي Fit ── */
+function pdfjsComputeScale(page){
+    const area = document.getElementById('pdfjsCanvasArea');
+    const vp0  = page.getViewport({ scale: 1 });
+    const aW   = area.clientWidth  - 40;
+    const aH   = area.clientHeight - 40;
+    if(pdfScale === 'fitWidth') return aW / vp0.width;
+    if(pdfScale === 'fitPage')  return Math.min(aW / vp0.width, aH / vp0.height);
+    return parseFloat(pdfScale);
 }
 
-/* --- Render all pages --- */
-async function pdfjsRenderAll(){
-    const area = document.getElementById('pdfjsCanvasArea');
+/* ── رسم صفحة واحدة (Single Page Render) ── */
+async function pdfjsRenderPage(pageNum, fade){
+    if(!pdfDoc) return;
 
-    // cancel any previous renders
-    renderQueue.forEach(t => { try{ t.cancel(); }catch(e){} });
-    renderQueue = [];
-    area.innerHTML = '';
+    /* إلغاء أي رسم سابق لم ينته بعد */
+    if(renderTask){
+        try{ renderTask.cancel(); }catch(e){}
+        renderTask = null;
+    }
 
-    const firstPage = await pdfDoc.getPage(1);
-    const baseScale = (pdfScale === 'fitWidth' || pdfScale === 'fitPage')
-                      ? pdfjsComputeScale(firstPage, pdfScale)
-                      : pdfScale;
+    const wrap  = document.getElementById('pdfjsPageWrap');
+    const area  = document.getElementById('pdfjsCanvasArea');
 
-    for(let i = 1; i <= pdfDoc.numPages; i++){
-        // wrapper div
-        const wrap = document.createElement('div');
-        wrap.className = 'pdfjs-page-wrap';
-        wrap.id = 'pdfjs-page-' + i;
-        area.appendChild(wrap);
+    /* تأثير Fade عند الانتقال بين الصفحات */
+    if(fade){
+        wrap.classList.add('fading');
+        await new Promise(r => setTimeout(r, 200));
+    }
 
-        // canvas
-        const canvas = document.createElement('canvas');
+    const page     = await pdfDoc.getPage(pageNum);
+    const scale    = pdfjsComputeScale(page);
+    const viewport = page.getViewport({ scale });
+
+    /* أنشئ canvas جديد أو استخدم الموجود */
+    let canvas = wrap.querySelector('canvas');
+    if(!canvas){
+        wrap.innerHTML = '';   /* أزل رسالة التحميل */
+        canvas = document.createElement('canvas');
         wrap.appendChild(canvas);
-
-        // render async (don't await in loop so pages paint progressively)
-        (async (pageNum, cvs) => {
-            const page = await pdfDoc.getPage(pageNum);
-            const vp   = page.getViewport({ scale: baseScale });
-            cvs.width  = vp.width;
-            cvs.height = vp.height;
-            const task = page.render({ canvasContext: cvs.getContext('2d'), viewport: vp });
-            renderQueue.push(task);
-            try{ await task.promise; }catch(e){}
-        })(i, canvas);
     }
 
-    // sync current page on scroll
-    area.onscroll = pdfjsSyncPage;
-    pdfjsSyncPage();
-}
+    canvas.width  = viewport.width;
+    canvas.height = viewport.height;
 
-/* --- Detect which page is most visible → update toolbar counter --- */
-function pdfjsSyncPage(){
-    const area = document.getElementById('pdfjsCanvasArea');
-    const areaTop = area.scrollTop;
-    for(let i = 1; i <= pdfDoc.numPages; i++){
-        const el = document.getElementById('pdfjs-page-' + i);
-        if(!el) continue;
-        if(el.offsetTop + el.offsetHeight > areaTop + 40){
-            document.getElementById('pdfjsCurrentPage').textContent = i;
-            document.getElementById('pdfjsPrev').disabled = (i === 1);
-            document.getElementById('pdfjsNext').disabled = (i === pdfDoc.numPages);
-            break;
-        }
+    /* إعادة ضبط التمرير إلى الأعلى عند تغيير الصفحة */
+    area.scrollTop  = 0;
+    area.scrollLeft = 0;
+
+    renderTask = page.render({
+        canvasContext: canvas.getContext('2d'),
+        viewport
+    });
+
+    try{
+        await renderTask.promise;
+    } catch(e){
+        /* تم الإلغاء — تجاهل الخطأ */
+        return;
     }
+    renderTask = null;
+
+    /* أزل Fade */
+    wrap.classList.remove('fading');
+
+    /* حدّث عداد الصفحات */
+    pdfjsUpdateUI(pageNum);
 }
 
-/* --- Navigate to page --- */
-function pdfjsGoPage(delta){
-    const cur = parseInt(document.getElementById('pdfjsCurrentPage').textContent) || 1;
-    const target = cur + delta;
-    if(target < 1 || target > pdfDoc.numPages) return;
-    const el = document.getElementById('pdfjs-page-' + target);
-    if(el) document.getElementById('pdfjsCanvasArea').scrollTop = el.offsetTop - 10;
+/* ── تحديث شريط الأدوات ── */
+function pdfjsUpdateUI(pageNum){
+    document.getElementById('pdfjsCurrentPage').textContent = pageNum;
+    document.getElementById('pdfjsPrev').disabled = (pageNum <= 1);
+    document.getElementById('pdfjsNext').disabled = (pageNum >= pdfDoc.numPages);
 }
 
-/* --- Zoom --- */
-function pdfjsZoom(delta){
-    const cur = (typeof pdfScale === 'number') ? pdfScale : 1.0;
-    pdfScale = Math.max(0.25, Math.min(4.0, cur + delta));
-    // update select to nearest numeric option
-    const sel = document.getElementById('pdfjsZoomSelect');
-    const closest = ['0.5','0.75','1.0','1.25','1.5','1.75','2.0']
-        .reduce((a,b) => Math.abs(parseFloat(b)-pdfScale) < Math.abs(parseFloat(a)-pdfScale) ? b : a);
+/* ── التنقل بين الصفحات ── */
+async function pdfjsGoPage(delta){
+    if(!pdfReady) return;
+    const next = currentPage + delta;
+    if(next < 1 || next > pdfDoc.numPages) return;
+    currentPage = next;
+    await pdfjsRenderPage(currentPage, true);
+}
+
+/* ── تغيير التكبير ── */
+async function pdfjsZoom(delta){
+    if(!pdfReady) return;
+    const cur  = (typeof pdfScale === 'number') ? pdfScale : 1.0;
+    pdfScale   = Math.max(0.25, Math.min(4.0, cur + delta));
+    /* حدّث القائمة المنسدلة إلى أقرب قيمة */
+    const sel     = document.getElementById('pdfjsZoomSelect');
+    const options = ['0.5','0.75','1.0','1.25','1.5','1.75','2.0'];
+    const closest = options.reduce((a,b) =>
+        Math.abs(parseFloat(b)-pdfScale) < Math.abs(parseFloat(a)-pdfScale) ? b : a
+    );
     sel.value = closest;
-    pdfjsRenderAll();
+    await pdfjsRenderPage(currentPage, false);
 }
 
-function pdfjsSetZoom(val){
-    if(val === 'fitWidth' || val === 'fitPage'){
-        pdfScale = val;
-    } else {
-        pdfScale = parseFloat(val);
-    }
-    pdfjsRenderAll();
+async function pdfjsSetZoom(val){
+    if(!pdfReady) return;
+    pdfScale = (val === 'fitWidth' || val === 'fitPage') ? val : parseFloat(val);
+    await pdfjsRenderPage(currentPage, false);
 }
 
-/* --- Enable all toolbar controls --- */
+/* ── تفعيل أزرار شريط الأدوات ── */
 function pdfjsEnableControls(){
     ['pdfjsPrev','pdfjsNext','pdfjsZoomOut','pdfjsZoomIn',
      'pdfjsFitWidth','pdfjsFitPage','pdfjsZoomSelect'].forEach(id => {
@@ -1371,25 +986,22 @@ function pdfjsEnableControls(){
     document.getElementById('pdfjsLoadingIndicator').style.display = 'none';
 }
 
-/* --- Main init: load PDF.js, then the PDF --- */
+/* ── التهيئة الرئيسية ── */
 async function pdfjsInit(){
     if(pdfReady) return;
-    try {
+    try{
         pdfjsLib = await pdfjsLoadScript();
 
-        const loadingTask = pdfjsLib.getDocument(PDF_FILE);
-        pdfDoc = await loadingTask.promise;
+        pdfDoc = await pdfjsLib.getDocument(PDF_FILE).promise;
 
-        document.getElementById('pdfjsTotalPages').textContent   = pdfDoc.numPages;
-        document.getElementById('pdfjsCurrentPage').textContent  = 1;
-
+        document.getElementById('pdfjsTotalPages').textContent = pdfDoc.numPages;
         pdfjsEnableControls();
-        pdfReady = true;
+        pdfReady   = true;
+        currentPage = 1;
 
-        // default: fit width
-        pdfScale = 'fitWidth';
+        /* اضبط القائمة على fitWidth ثم ارسم الصفحة الأولى */
         document.getElementById('pdfjsZoomSelect').value = 'fitWidth';
-        await pdfjsRenderAll();
+        await pdfjsRenderPage(1, false);
 
     } catch(err){
         console.error('PDF.js error:', err);
@@ -1397,14 +1009,14 @@ async function pdfjsInit(){
             `<div class="pdfjs-error">
                 <i class="fa-solid fa-triangle-exclamation"></i>
                 Could not load the PDF. Please make sure
-                <code>شهاده مجمع.pdf</code> is in the same folder as this HTML file,
-                and that the page is served via a web server (not file://).
+                <code>شهاده مجمع.pdf</code> is in the same folder as this HTML file
+                and the page is served via a web server (not file://).
              </div>`;
         document.getElementById('pdfjsLoadingIndicator').textContent = 'Error';
     }
 }
 
-/* --- Auto-init when the PDF section scrolls into view --- */
+/* ── تشغيل تلقائي عند ظهور الـ Viewer في الشاشة ── */
 const pdfjsInitObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if(entry.isIntersecting){
@@ -1417,27 +1029,30 @@ const pdfjsInitObserver = new IntersectionObserver((entries) => {
 const pdfjsWrap = document.getElementById('pdfjsViewerWrap');
 if(pdfjsWrap) pdfjsInitObserver.observe(pdfjsWrap);
 
-/* --- Re-render on window resize (debounced) to keep fit-modes correct --- */
+/* ── إعادة رسم عند تغيير حجم النافذة (Fit modes) ── */
 let pdfjsResizeTimer;
 window.addEventListener('resize', () => {
     if(!pdfReady) return;
     clearTimeout(pdfjsResizeTimer);
-    pdfjsResizeTimer = setTimeout(() => { pdfjsRenderAll(); }, 300);
+    pdfjsResizeTimer = setTimeout(() => {
+        pdfjsRenderPage(currentPage, false);
+    }, 300);
 });
 
-/* =====================================================
-   KEYBOARD: ESC closes any open lightbox
-   ===================================================== */
+/* ── ESC يغلق أي Lightbox مفتوح ── */
 document.addEventListener("keydown", function(e){
     if(e.key === "Escape"){
-        if(certLb.classList.contains("active"))                                      { closeCertLightbox(); }
-        else if(document.getElementById("lightbox").classList.contains("active"))    { closeLightbox(); }
+        if(certLb.classList.contains("active"))                                   { closeCertLightbox(); }
+        else if(document.getElementById("lightbox").classList.contains("active")) { closeLightbox(); }
+    }
+    /* مفاتيح الأسهم للتنقل بين صفحات الـ PDF */
+    if(pdfReady){
+        if(e.key === "ArrowRight" || e.key === "ArrowDown")  pdfjsGoPage(1);
+        if(e.key === "ArrowLeft"  || e.key === "ArrowUp")    pdfjsGoPage(-1);
     }
 });
 
-/* =====================================================
-   SCROLL REVEAL — sections fade-up
-   ===================================================== */
+/* ── Scroll Reveal للأقسام ── */
 const revealObserver = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -1446,44 +1061,24 @@ const revealObserver = new IntersectionObserver((entries)=>{
         }
     });
 }, { threshold: 0.08 });
-
 document.querySelectorAll(".reveal").forEach(el=> revealObserver.observe(el));
 
-/* =====================================================
-   [NEW] PER-CARD STAGGER — each cert-grid is observed
-   individually so cards inside it appear one-by-one
-   with a stagger delay as they enter the viewport.
-   Works for BOTH cert-grids independently.
-   ===================================================== */
-const STAGGER_BASE  = 0.10; // seconds between each card
-const STAGGER_START = 0.05; // delay before first card
-
+/* ── Stagger animation للبطاقات ── */
+const STAGGER_BASE  = 0.10;
+const STAGGER_START = 0.05;
 const gridObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-
-        const grid  = entry.target;
-        const cards = Array.from(grid.querySelectorAll(".cert-card"));
-
+        if(!entry.isIntersecting) return;
+        const cards = Array.from(entry.target.querySelectorAll(".cert-card"));
         cards.forEach((card, i) => {
-            // Apply the stagger delay directly on the element's style
             card.style.transitionDelay = (STAGGER_START + i * STAGGER_BASE) + "s";
             card.classList.add("card-visible");
         });
-
-        // After animation done, clear transitionDelay so hover still works smoothly
-        const lastDelay = (STAGGER_START + (cards.length - 1) * STAGGER_BASE + 0.7) * 1000;
-        setTimeout(() => {
-            cards.forEach(card => { card.style.transitionDelay = ""; });
-        }, lastDelay);
-
-        gridObserver.unobserve(grid);
+        const lastDelay = (STAGGER_START + (cards.length-1)*STAGGER_BASE + 0.7)*1000;
+        setTimeout(() => { cards.forEach(c=>{ c.style.transitionDelay=""; }); }, lastDelay);
+        gridObserver.unobserve(entry.target);
     });
-}, {
-    threshold: 0.12   // trigger when ~12% of the grid is visible
-});
-
-// Observe every cert-grid on the page
+}, { threshold: 0.12 });
 document.querySelectorAll(".cert-grid").forEach(grid => gridObserver.observe(grid));
 </script>
 
