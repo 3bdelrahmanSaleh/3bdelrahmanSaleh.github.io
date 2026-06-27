@@ -17,9 +17,50 @@ body.light .card{ background:white; color:#0f172a; }
 body.light header{ background:#dbeafe; }
 body.light .top-bar{ background:white; color:#0f172a; }
 
-.top-bar{ display:flex; justify-content:space-between; align-items:center; width:100%; background:#020617; color:#38bdf8; padding:8px 15px; position:fixed; top:0; left:0; z-index:2000; box-shadow:0 2px 10px rgba(0,0,0,0.4); }
-.left{ display:flex; align-items:center; gap:10px; }
-.logo{ font-size:13px; font-weight:bold; letter-spacing:2px; }
+.top-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    width:100%; background:rgba(2,6,23,0.96);
+    color:#38bdf8; padding:0 28px;
+    position:fixed; top:0; left:0; z-index:2000;
+    height:58px;
+    box-shadow:0 1px 0 rgba(56,189,248,0.1), 0 4px 20px rgba(0,0,0,0.5);
+    backdrop-filter:blur(12px);
+}
+body.light .top-bar{ background:rgba(255,255,255,0.97); box-shadow:0 1px 0 rgba(56,189,248,0.15),0 4px 20px rgba(0,0,0,0.08); }
+.left{ display:flex; align-items:center; gap:12px; }
+.logo{
+    font-family:'Syne', sans-serif;
+    font-size:15px; font-weight:700; letter-spacing:2.5px;
+    color:#38bdf8; white-space:nowrap;
+}
+body.light .logo{ color:#0369a1; }
+
+/* Desktop nav links */
+.nav-links{
+    display:none;
+    align-items:center; gap:4px;
+}
+.nav-links a{
+    font-family:'Inter', sans-serif;
+    font-size:0.82rem; font-weight:500;
+    color:#94a3b8; text-decoration:none;
+    padding:6px 12px; border-radius:8px;
+    transition:color 0.2s ease, background 0.2s ease;
+    white-space:nowrap;
+}
+.nav-links a:hover{ color:#38bdf8; background:rgba(56,189,248,0.08); }
+body.light .nav-links a{ color:#475569; }
+body.light .nav-links a:hover{ color:#0369a1; background:rgba(14,165,233,0.08); }
+
+@media(min-width:900px){
+    .nav-links{ display:flex; }
+    .menu-btn{ display:none; }
+    body{ padding-top:58px; }
+}
+@media(max-width:899px){
+    body{ padding-top:55px; }
+}
+
 .menu-btn{ font-size:20px; cursor:pointer; }
 .mode-btn{
     cursor:pointer;
@@ -52,14 +93,31 @@ body.light .mode-btn::after{
 }
 .mode-btn i{ display:none; }
 
-.overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:none; z-index:1500; }
+.nav-links a.nav-active{
+    color:#38bdf8;
+    background:rgba(56,189,248,0.1);
+}
+body.light .nav-links a.nav-active{ color:#0369a1; background:rgba(14,165,233,0.1); }
 .menu{ position:fixed; top:55px; left:15px; background:#1e293b; border-radius:12px; padding:10px; display:none; flex-direction:column; gap:8px; z-index:2001; min-width:170px; }
 .menu a{ color:white; text-decoration:none; padding:8px 10px; border-radius:8px; background:#0f172a; }
 
-header{ background:#153E7E; min-height:100vh; display:flex; justify-content:center; align-items:center; padding:40px; }
-.hero{ display:flex; align-items:center; justify-content:center; gap:40px; flex-wrap:wrap; max-width:1100px; }
+/* ── Performance: force GPU compositing on animated elements ── */
+.ring, .dot, .profile-pic, .proj-card, .skill-card, .cert-card, .reveal {
+    will-change: transform, opacity;
+}
+
+header{
+    background:#153E7E;
+    min-height:100vh;
+    display:flex; justify-content:center; align-items:center;
+    padding:40px;
+}
+@media(min-width:900px){
+    header{ min-height:auto; padding:80px 40px; }
+}
+.hero{ display:flex; align-items:center; justify-content:center; gap:60px; flex-wrap:wrap; max-width:1200px; width:100%; }
 .pic-wrapper{ position:relative; width:385px; height:385px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
-.profile-pic{ width:265px; height:265px; border-radius:50%; object-fit:cover; border:3px solid rgba(0,245,196,0.5); box-shadow:0 0 20px rgba(0,245,196,0.3),0 0 60px rgba(0,245,196,0.1); position:relative; z-index:5; transition:transform 0.4s ease,box-shadow 0.4s ease; }
+.profile-pic{ width:265px; height:265px; border-radius:50%; object-fit:cover; border:3px solid rgba(0,245,196,0.5); box-shadow:0 0 20px rgba(0,245,196,0.3),0 0 60px rgba(0,245,196,0.1); position:relative; z-index:5; transition:transform 0.3s ease,box-shadow 0.3s ease; }
 .pic-wrapper:hover .profile-pic{ transform:scale(1.05); box-shadow:0 0 30px rgba(0,245,196,0.6),0 0 80px rgba(0,245,196,0.2); }
 .ring{ position:absolute; border-radius:50%; border:1.5px solid transparent; top:50%; left:50%; transform:translate(-50%,-50%); }
 .ring-1{ width:315px; height:315px; border-color:rgba(0,245,196,0.25); box-shadow:0 0 8px rgba(0,245,196,0.15); animation:spinCW 6s linear infinite; }
@@ -80,15 +138,25 @@ header{ background:#153E7E; min-height:100vh; display:flex; justify-content:cent
     .dot-2{margin-top:-136px;margin-left:-4px;transform-origin:4px 136px;}
     .dot-3{margin-top:-136px;margin-left:-3px;transform-origin:3px 136px;}
 }
-.hero-text{ text-align:left; }
-.hero-text h1{ font-family:'Syne', sans-serif; font-size:3rem; color:#38bdf8; margin-bottom:14px; }
+.hero-text{ text-align:left; flex:1; min-width:280px; max-width:600px; }
+.hero-text h1{
+    font-family:'Syne', sans-serif;
+    font-size:2.2rem; color:#38bdf8; margin-bottom:14px;
+}
+.hero-text h1.split-done{
+    white-space:normal;
+}
+@media(min-width:900px){
+    .hero-text h1{ font-size:3.8rem; }
+    .hero{ gap:80px; }
+}
 .hero-bio{
     font-family:'Inter', sans-serif;
     font-size:0.9rem;
     color:#94a3b8;
     line-height:1.85;
     margin-bottom:24px;
-    max-width:480px;
+    max-width:520px;
     letter-spacing:0.01em;
 }
 .hero-bio strong{ color:#e2e8f0; font-weight:600; }
@@ -100,8 +168,10 @@ header{ background:#153E7E; min-height:100vh; display:flex; justify-content:cent
 .btn{ background:#38bdf8; color:white; text-decoration:none; padding:12px 22px; border-radius:8px; transition:.3s; font-weight:bold; }
 .btn:hover{ background:#0ea5e9; transform:translateY(-2px); }
 
-section{ padding:60px 10%; border-bottom:1px solid #1e293b; }
-h2{ font-family:'Syne', sans-serif; color:#38bdf8; margin-bottom:25px; font-size:2rem; font-weight:700; letter-spacing:0.01em; }
+section{ padding:70px 8%; border-bottom:1px solid #1e293b; }
+@media(min-width:900px){ section{ padding:90px max(8%, calc(50vw - 640px)); } }
+h2{ font-family:'Syne', sans-serif; color:#38bdf8; margin-bottom:28px; font-size:2rem; font-weight:700; letter-spacing:0.01em; }
+@media(min-width:900px){ h2{ font-size:2.4rem; margin-bottom:38px; } }
 
 .social-links{ display:flex; justify-content:center; gap:20px; margin-top:20px; }
 .social-links a{ width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; color:white; text-decoration:none; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.3); }
@@ -116,9 +186,9 @@ footer{ border-top:1px solid #334155; text-align:center; padding:15px; font-size
 .lightbox-close:hover{color:#38bdf8;}
 @keyframes zoomIn{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
 
-.reveal{ opacity:0; transform:translateY(40px); transition:opacity 0.9s ease,transform 0.9s ease; }
+.reveal{ opacity:0; transform:translateY(24px); transition:opacity 0.5s ease,transform 0.5s ease; }
 .reveal.visible{ opacity:1; transform:translateY(0); }
-.reveal h2{ opacity:0; transform:translateX(-20px); transition:opacity 0.6s ease,transform 0.6s ease; }
+.reveal h2{ opacity:0; transform:translateX(-16px); transition:opacity 0.4s ease,transform 0.4s ease; }
 .reveal.visible h2{ opacity:1; transform:translateX(0); transition-delay:0s; }
 
 /* ==============================
@@ -252,17 +322,18 @@ body.light .edu-desc{ color:#475569; }
     .edu-dot{ left:16px; }
 }
 .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; }
+@media(min-width:900px){ .skills-grid{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:22px; } }
 .skill-card{
     background:linear-gradient(145deg,rgba(30,41,59,0.95),rgba(15,23,42,0.85));
     border:1px solid rgba(56,189,248,0.12); border-radius:16px;
     padding:20px 18px; display:flex; align-items:center; gap:16px;
     position:relative; overflow:hidden;
-    opacity:0; transform:translateY(24px);
-    transition:opacity 0.6s ease,transform 0.6s ease,box-shadow 0.3s ease,border-color 0.3s ease;
+    opacity:0; transform:translateY(18px);
+    transition:opacity 0.35s ease,transform 0.35s ease,box-shadow 0.2s ease,border-color 0.2s ease;
 }
 .skill-card.card-visible{ opacity:1; transform:translateY(0); }
 .skill-card::before{ content:''; position:absolute; inset:0; border-radius:16px; background:linear-gradient(135deg,rgba(56,189,248,0.03) 0%,transparent 65%); pointer-events:none; }
-.skill-card:hover{ transform:translateY(-5px) scale(1.02); box-shadow:0 14px 38px rgba(56,189,248,0.15),0 4px 14px rgba(0,0,0,0.4); border-color:rgba(56,189,248,0.4); }
+.skill-card:hover{ transform:translateY(-4px) scale(1.015); box-shadow:0 10px 28px rgba(56,189,248,0.12),0 3px 10px rgba(0,0,0,0.35); border-color:rgba(56,189,248,0.4); }
 /* أيقونة البرنامج */
 .skill-icon-wrap{
     width:52px; height:52px; border-radius:12px; flex-shrink:0;
@@ -283,6 +354,7 @@ body.light .skill-icon-wrap{ background:linear-gradient(135deg,#dbeafe,#e0f2fe);
    PROJECTS — بطاقات مع صور
    ============================== */
 .projects-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+@media(min-width:900px){ .projects-grid{ gap:28px; } }
 @media(max-width:1024px){.projects-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:600px){.projects-grid{grid-template-columns:1fr;}}
 
@@ -290,13 +362,13 @@ body.light .skill-icon-wrap{ background:linear-gradient(135deg,#dbeafe,#e0f2fe);
     background:linear-gradient(145deg,rgba(30,41,59,0.95),rgba(15,23,42,0.85));
     border:1px solid rgba(56,189,248,0.15); border-radius:16px;
     overflow:hidden; display:flex; flex-direction:column;
-    position:relative; opacity:0; transform:translateY(36px);
-    transition:opacity 0.65s ease,transform 0.65s ease,box-shadow 0.35s ease,border-color 0.35s ease;
-    backdrop-filter:blur(6px);
+    position:relative; opacity:0; transform:translateY(22px);
+    transition:opacity 0.38s ease,transform 0.38s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+    backdrop-filter:blur(4px);
 }
 .proj-card.card-visible{opacity:1;transform:translateY(0);}
-.proj-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(56,189,248,0.04) 0%,transparent 60%);pointer-events:none;transition:opacity 0.35s ease;}
-.proj-card:hover{transform:translateY(-8px) scale(1.025);box-shadow:0 20px 50px rgba(56,189,248,0.18),0 6px 20px rgba(0,0,0,0.5);border-color:rgba(56,189,248,0.45);}
+.proj-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(56,189,248,0.04) 0%,transparent 60%);pointer-events:none;}
+.proj-card:hover{transform:translateY(-6px) scale(1.018);box-shadow:0 16px 40px rgba(56,189,248,0.15),0 4px 16px rgba(0,0,0,0.45);border-color:rgba(56,189,248,0.45);}
 .proj-card:hover::before{opacity:2.5;}
 
 .proj-img-wrap{ width:100%; height:210px; position:relative; overflow:hidden; border-bottom:1px solid rgba(56,189,248,0.12); background:linear-gradient(135deg,#0a1628,#102040); }
@@ -326,6 +398,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 .cert-category-title h3{font-size:1.35rem;color:#e2e8f0;font-weight:700;letter-spacing:0.5px;}
 body.light .cert-category-title h3{color:#0f172a;}
 .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media(min-width:900px){ .cert-grid{ gap:28px; } }
 @media(max-width:1024px){.cert-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:600px){.cert-grid{grid-template-columns:1fr;}}
 .cert-card{background:linear-gradient(145deg,rgba(30,41,59,0.9),rgba(15,23,42,0.8));border:1px solid rgba(56,189,248,0.15);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;height:100%;transition:opacity 0.65s ease,transform 0.65s ease,box-shadow 0.35s ease,border-color 0.35s ease;backdrop-filter:blur(6px);position:relative;opacity:0;transform:translateY(36px);}
@@ -403,7 +476,52 @@ body.light .pdfjs-canvas-area{background:#e2e8f0;}
 body.light .pdfjs-btn{background:rgba(14,165,233,0.08);color:#334155;}
 body.light .pdfjs-btn:hover:not(:disabled){background:rgba(14,165,233,0.2);color:#0f172a;}
 body.light .pdfjs-zoom-select{background:white;color:#334155;}
-body.light .pdfjs-page-info{color:#475569;}
+/* ── Typing animation ── */
+.typing-cursor{
+    display:inline-block;
+    width:3px; height:0.85em;
+    background:#38bdf8;
+    margin-left:3px;
+    vertical-align:middle;
+    border-radius:2px;
+    animation:blink 0.75s step-end infinite;
+}
+@keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* ── Back to Top ── */
+#backToTop{
+    position:fixed; bottom:28px; right:24px; z-index:1500;
+    width:44px; height:44px; border-radius:12px;
+    background:linear-gradient(135deg,#38bdf8,#00f5c4);
+    color:#0f172a; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+    box-shadow:0 4px 18px rgba(56,189,248,0.35);
+    opacity:0; transform:translateY(12px);
+    transition:opacity 0.3s ease, transform 0.3s ease;
+    pointer-events:none;
+}
+#backToTop.visible{ opacity:1; transform:translateY(0); pointer-events:auto; }
+#backToTop:hover{ transform:translateY(-3px); box-shadow:0 8px 24px rgba(56,189,248,0.5); }
+
+/* ── Read More ── */
+.proj-desc{
+    font-size:0.84rem; color:#94a3b8; line-height:1.65; flex:1;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    transition:max-height 0.35s ease;
+}
+.proj-desc.expanded{ display:block; overflow:visible; }
+.read-more-btn{
+    align-self:flex-start;
+    background:none; border:none; cursor:pointer;
+    font-size:0.78rem; font-weight:600;
+    color:#38bdf8; padding:2px 0;
+    letter-spacing:0.03em;
+    transition:color 0.2s ease;
+}
+.read-more-btn:hover{ color:#00f5c4; }
+body.light .read-more-btn{ color:#0369a1; }
+body.light .read-more-btn:hover{ color:#0284c7; }
 </style>
 </head>
 <body>
@@ -413,6 +531,14 @@ body.light .pdfjs-page-info{color:#475569;}
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <div class="logo">GIS Portfolio</div>
     </div>
+    <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#certificates">Certificates</a>
+        <a href="#contact">Contact</a>
+    </nav>
     <div class="mode-btn" onclick="toggleMode()">
         <i class="fa-solid fa-moon"></i>
         <i class="fa-solid fa-sun"></i>
@@ -659,6 +785,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">Sand Dune Movement Analysis using ArcGIS</div>
                 <div class="proj-desc">Monitored sand dune migration patterns using multi-temporal satellite imagery in ArcGIS Pro, applying change detection to quantify dune displacement rates over five years. Delivered movement maps and reports to environmental management authorities for desertification mitigation.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -674,6 +801,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">Solid Waste Landfill Suitability Analysis</div>
                 <div class="proj-desc">Developed a multi-criteria GIS model integrating geology, land use, population density, and transport networks to rank candidate landfill sites via weighted overlay analysis. Results provided decision-makers a scientifically validated shortlist, reducing risk.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -689,6 +817,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">Wadi El-Shallal Field Survey & GIS Mapping</div>
                 <div class="proj-desc">Conducted a comprehensive field survey of Wadi El-Shallal, Matrouh, using Total Station, GPS, and Level instruments. Integrated all measurements into GIS for spatial analysis, contour mapping, and terrain modelling, producing a full topographic map.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -704,6 +833,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">Land Use / Land Cover Change Detection</div>
                 <div class="proj-desc">Classified and compared land cover maps from two time periods using Landsat imagery and supervised classification in ArcGIS and ERDAS Imagine. Findings contributed to a regional environmental assessment on urban expansion impacts.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -719,6 +849,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">Vegetation Health Monitoring with NDVI</div>
                 <div class="proj-desc">Computed NDVI time series from Sentinel-2 imagery to assess seasonal vegetation health, correlating anomalies with drought and soil degradation using Google Earth Engine. Produced monthly health maps for agricultural extension offices.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -734,6 +865,7 @@ body.light .pdfjs-page-info{color:#475569;}
             <div class="proj-body">
                 <div class="proj-title">GIS for Climate Action — Spatial Assessment</div>
                 <div class="proj-desc">Applied spatial analysis to assess climate vulnerabilities including flood risk zones, heat islands, and land degradation hotspots using multi-source datasets in ArcGIS Pro. Outputs formatted as policy-ready spatial reports aligned with SDGs.</div>
+                <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
             </div>
         </div>
 
@@ -926,6 +1058,10 @@ body.light .pdfjs-page-info{color:#475569;}
 
 <footer>© 2026 Abdelrahman Saleh Helal. All Rights Reserved.</footer>
 
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
 <script>
 /* MENU */
 let menu=document.getElementById("menu"),overlay=document.getElementById("overlay");
@@ -1041,26 +1177,125 @@ document.addEventListener("keydown",function(e){
     if(e.key==="Escape"){if(certLb.classList.contains("active"))closeCertLightbox();else if(document.getElementById("lightbox").classList.contains("active"))closeLightbox();}
 });
 
+/* Active nav link on scroll */
+const navLinks=document.querySelectorAll('.nav-links a');
+const sectionIds=['about','education','skills','projects','certificates','contact'];
+function setActiveNav(){
+    let current='';
+    sectionIds.forEach(id=>{
+        const el=document.getElementById(id);
+        if(el&&window.scrollY>=el.offsetTop-100) current=id;
+    });
+    navLinks.forEach(a=>{
+        a.classList.toggle('nav-active', a.getAttribute('href')==='#'+current);
+    });
+}
+window.addEventListener('scroll',setActiveNav,{passive:true});
+setActiveNav();
+
+/* ── Typing → split animation ── */
+(function(){
+    const el=document.querySelector('.hero-text h1');
+    if(!el)return;
+    const words=['Abdelrahman','Saleh','Helal'];
+    const isMobile=window.innerWidth<900;
+
+    /* Build spans: on mobile line1=word0, line2=word1+word2 */
+    el.innerHTML='';
+
+    if(isMobile){
+        /* We'll type into a single hidden line, then reveal split */
+        const line1=document.createElement('span');
+        line1.style.cssText='display:block;overflow:hidden;white-space:nowrap;max-width:100%;';
+        const line2=document.createElement('span');
+        line2.style.cssText='display:block;opacity:0;transition:opacity 0.4s ease;';
+        line2.textContent='Saleh Helal';
+        el.appendChild(line1);
+        el.appendChild(line2);
+
+        const cursor=document.createElement('span');
+        cursor.className='typing-cursor';
+        line1.appendChild(cursor);
+
+        const text='Abdelrahman';
+        let i=0;
+        function type(){
+            if(i<text.length){
+                line1.insertBefore(document.createTextNode(text[i]),cursor);
+                i++;
+                setTimeout(type,45);
+            } else {
+                /* done typing line1 — fade cursor, show line2 */
+                setTimeout(()=>{
+                    cursor.style.transition='opacity 0.3s';
+                    cursor.style.opacity='0';
+                    setTimeout(()=>{
+                        cursor.remove();
+                        line1.style.whiteSpace='normal';
+                        line2.style.opacity='1';
+                    },350);
+                },700);
+            }
+        }
+        setTimeout(type,300);
+
+    } else {
+        /* Desktop: type full name in one line */
+        const full='Abdelrahman Saleh Helal';
+        const cursor=document.createElement('span');
+        cursor.className='typing-cursor';
+        el.appendChild(cursor);
+        let i=0;
+        function type(){
+            if(i<full.length){
+                el.insertBefore(document.createTextNode(full[i]),cursor);
+                i++;
+                setTimeout(type,38);
+            } else {
+                setTimeout(()=>{
+                    cursor.style.transition='opacity 0.3s';
+                    cursor.style.opacity='0';
+                    setTimeout(()=>cursor.remove(),350);
+                },900);
+            }
+        }
+        setTimeout(type,300);
+    }
+})();
+
+/* ── Back to Top ── */
+const btt=document.getElementById('backToTop');
+window.addEventListener('scroll',()=>{
+    btt.classList.toggle('visible',window.scrollY>400);
+},{passive:true});
+
+/* ── Read More ── */
+function toggleReadMore(btn){
+    const desc=btn.previousElementSibling;
+    const expanded=desc.classList.toggle('expanded');
+    btn.textContent=expanded?'Show less ↑':'Read more ↓';
+}
+
 /* Scroll Reveal */
-const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");revealObserver.unobserve(entry.target);}});},{threshold:0.08});
+const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");revealObserver.unobserve(entry.target);}});},{threshold:0.06});
 document.querySelectorAll(".reveal").forEach(el=>revealObserver.observe(el));
 
-/* Stagger */
+/* Stagger — faster delays */
 function makeStaggerObserver(selector,cardClass,delay,threshold){
     const obs=new IntersectionObserver(entries=>{
         entries.forEach(entry=>{
             if(!entry.isIntersecting)return;
             const cards=Array.from(entry.target.querySelectorAll(cardClass));
-            cards.forEach((c,i)=>{c.style.transitionDelay=(0.05+i*delay)+"s";c.classList.add("card-visible");});
-            setTimeout(()=>{cards.forEach(c=>{c.style.transitionDelay="";});},(0.05+(cards.length-1)*delay+0.7)*1000);
+            cards.forEach((c,i)=>{c.style.transitionDelay=(i*delay)+"s";c.classList.add("card-visible");});
+            setTimeout(()=>{cards.forEach(c=>{c.style.transitionDelay="";});},(cards.length*delay+0.5)*1000);
             obs.unobserve(entry.target);
         });
     },{threshold});
     document.querySelectorAll(selector).forEach(g=>obs.observe(g));
 }
-makeStaggerObserver(".cert-grid",".cert-card",0.10,0.12);
-makeStaggerObserver(".projects-grid",".proj-card",0.10,0.08);
-makeStaggerObserver(".skills-grid",".skill-card",0.08,0.10);
+makeStaggerObserver(".cert-grid",".cert-card",0.07,0.10);
+makeStaggerObserver(".projects-grid",".proj-card",0.07,0.06);
+makeStaggerObserver(".skills-grid",".skill-card",0.06,0.08);
 </script>
 </body>
 </html>
