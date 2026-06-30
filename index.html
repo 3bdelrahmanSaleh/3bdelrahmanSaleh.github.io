@@ -466,11 +466,14 @@ h2{
 .edu-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px;}
 .edu-item:nth-child(1)::before{background:linear-gradient(180deg,var(--primary),var(--secondary));}
 .edu-item:nth-child(2)::before{background:linear-gradient(180deg,#a78bfa,var(--primary));}
+.edu-item:nth-child(3)::before{background:linear-gradient(180deg,var(--accent-gold),#a78bfa);}
 .edu-dot{position:absolute;left:22px;top:30px;width:10px;height:10px;border-radius:50%;border:2px solid var(--primary);background:var(--bg);box-shadow:0 0 8px rgba(59,130,246,0.5);}
 .edu-item:nth-child(2) .edu-dot{border-color:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);}
+.edu-item:nth-child(3) .edu-dot{border-color:var(--accent-gold);box-shadow:0 0 8px rgba(245,158,11,0.5);}
 .edu-degree{font-family: var(--font-main);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;}
 .edu-institution{font-size:0.85rem;color:var(--primary);font-weight:500;margin-bottom:10px;}
 .edu-item:nth-child(2) .edu-institution{color:#a78bfa;}
+.edu-item:nth-child(3) .edu-institution{color:var(--accent-gold);}
 .edu-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.75;}
 .edu-badge{
   display:inline-flex;align-items:center;gap:6px;margin-top:14px;
@@ -479,6 +482,7 @@ h2{
   background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:var(--primary);
 }
 .edu-item:nth-child(2) .edu-badge{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.2);color:#a78bfa;}
+.edu-item:nth-child(3) .edu-badge{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:var(--accent-gold);}
 @media(max-width:600px){.edu-item{padding:20px 16px 20px 38px;}.edu-dot{left:14px;}}
 
 /* ═══════════════════════════════════════════════
@@ -552,7 +556,7 @@ h2{
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
 .proj-desc.expanded{display:block;overflow:visible;}
-.read-more-btn{
+.read-more-btn{display:none;
   align-self:flex-start;background:none;border:none;cursor:pointer;
   font-size:0.77rem;font-weight:600;color:var(--primary);padding:2px 0;
   transition:color 0.2s;
@@ -690,18 +694,6 @@ h2{
   animation:blink 0.75s step-end infinite;
 }
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-#backToTop{
-  position:fixed;bottom:28px;right:24px;z-index:1500;
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#fff;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  box-shadow:0 4px 18px rgba(59,130,246,0.35);
-  opacity:0;transform:translateY(12px);
-  transition:opacity 0.3s,transform 0.3s;pointer-events:none;
-}
-#backToTop.visible{opacity:1;transform:translateY(0);pointer-events:auto;}
-#backToTop:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,130,246,0.5);}
 
 /* ═══════════════════════════════════════════════
    FOOTER
@@ -740,7 +732,6 @@ body.light .skill-card{background:#fff;}
 body.light .skill-name{color:#0f172a;}
 body.light .proj-card{background:#fff;}
 body.light .cert-card{background:#fff;}
-body.light footer{background:rgba(241,245,249,0.9);}
 body.light .pdfjs-viewer-wrap{background:#e2e8f0;}
 body.light .pdfjs-toolbar{background:#dbeafe;}
 body.light .pdfjs-canvas-area{background:#e2e8f0;}
@@ -749,9 +740,133 @@ body.light .pdfjs-zoom-select{background:#fff;color:#334155;}
 body.light .contact-card{background:#fff;}
 body.light .cert-thumb{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
+/* ═══════════════════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════════════════ */
+#loadingScreen{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity 0.5s ease;
+}
+#loadingScreen.fade-out{opacity:0;pointer-events:none;}
+.load-logo{
+  width:64px;height:64px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,var(--secondary),var(--primary) 70%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;letter-spacing:0.5px;
+  box-shadow:0 0 24px rgba(59,130,246,0.6);
+  animation:loadPulse 1.4s ease-in-out infinite;
+}
+@keyframes loadPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.load-title{font-family:var(--font-main);font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:1px;}
+.load-sub{font-size:0.78rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;}
+.load-bar-track{width:180px;height:4px;border-radius:4px;background:rgba(59,130,246,0.15);overflow:hidden;}
+.load-bar-fill{height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width 0.4s ease;}
+
+/* ═══════════════════════════════════════════════
+   HERO TYPING EFFECT
+═══════════════════════════════════════════════ */
+.hero-typing{
+  font-family:var(--font-main);font-size:1rem;font-weight:600;
+  color:var(--secondary);margin-top:2px;margin-bottom:14px;
+  display:flex;align-items:center;min-height:1.4em;
+}
+.hero-typing .cursor-blink{display:inline-block;margin-left:3px;animation:blink 0.9s step-end infinite;color:var(--secondary);}
+@keyframes blink{50%{opacity:0;}}
+
+/* ═══════════════════════════════════════════════
+   BUTTON RIPPLE
+═══════════════════════════════════════════════ */
+.ripple-wrap{position:relative;overflow:hidden;}
+.ripple-el{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.45);
+  transform:scale(0);animation:rippleAnim 0.55s ease-out;
+  pointer-events:none;
+}
+@keyframes rippleAnim{to{transform:scale(2.6);opacity:0;}}
+
+/* ═══════════════════════════════════════════════
+   FLOATING ICONS
+═══════════════════════════════════════════════ */
+@keyframes iconFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.feat-icon,.skill-icon-wrap{animation:iconFloat 3.6s ease-in-out infinite;}
+.skill-card:nth-child(2n) .skill-icon-wrap{animation-delay:0.4s;}
+.skill-card:nth-child(3n) .skill-icon-wrap{animation-delay:0.8s;}
+
+/* ═══════════════════════════════════════════════
+   SKILL CATEGORIES
+═══════════════════════════════════════════════ */
+.skill-category{margin-bottom:32px;}
+.skill-category:last-child{margin-bottom:0;}
+.skill-category-title{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  font-family:var(--font-main);font-size:0.95rem;font-weight:700;
+  color:#fff;text-transform:uppercase;letter-spacing:1px;
+}
+.skill-category-title i{color:var(--secondary);font-size:0.9rem;}
+.skill-category-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+
+/* ═══════════════════════════════════════════════
+   CERTIFICATE SEARCH & FILTER
+═══════════════════════════════════════════════ */
+.cert-toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.cert-search{
+  position:relative;flex:1;min-width:220px;max-width:340px;
+}
+.cert-search input{
+  width:100%;background:rgba(17,24,39,0.8);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px 10px 38px;color:var(--text);
+  font-family:var(--font-main);font-size:0.85rem;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.cert-search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
+.cert-search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.85rem;}
+.cert-filters{display:flex;flex-wrap:wrap;gap:8px;}
+.cert-filter-btn{
+  background:rgba(17,24,39,0.8);border:1px solid var(--border);color:var(--text-muted);
+  border-radius:999px;padding:7px 16px;font-size:0.78rem;font-weight:600;
+  cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s;font-family:var(--font-main);
+}
+.cert-filter-btn:hover{color:#fff;border-color:rgba(59,130,246,0.4);}
+.cert-filter-btn.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-color:transparent;}
+.cert-card.cert-hidden{display:none;}
+.cert-category.cert-cat-hidden{display:none;}
+.cert-no-results{display:none;text-align:center;color:var(--text-muted);padding:30px 0;font-size:0.9rem;}
+.cert-no-results.show{display:block;}
+
+/* ═══════════════════════════════════════════════
+   PROJECT BADGES & CARD FOOTER
+═══════════════════════════════════════════════ */
+.proj-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.proj-badge{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.3px;
+  padding:4px 10px;border-radius:999px;
+  background:rgba(34,197,94,0.1);color:var(--accent-green);
+  border:1px solid rgba(34,197,94,0.25);
+}
+.proj-footer{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:14px;
+  border-top:1px solid var(--border);
+}
+.proj-footer-btn{
+  font-size:0.78rem;font-weight:600;color:var(--text-muted);
+  background:rgba(59,130,246,0.08);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;cursor:pointer;
+  transition:background 0.2s,color 0.2s,border-color 0.2s;font-family:var(--font-main);
+  display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+}
+.proj-footer-btn:hover{background:rgba(59,130,246,0.18);color:#fff;border-color:rgba(59,130,246,0.4);}
 </style>
 </head>
 <body>
+<div id="loadingScreen">
+  <div class="load-logo">GIS</div>
+  <div class="load-title">GIS Portfolio</div>
+  <div class="load-sub">Loading...</div>
+  <div class="load-bar-track"><div class="load-bar-fill" id="loadBarFill"></div></div>
+</div>
 
 <!-- ═══ NAVBAR ═══ -->
 <nav class="navbar" id="mainNavbar">
@@ -818,6 +933,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     <div class="hero-badge"><i class="fa-solid fa-location-dot"></i> GIS Specialist</div>
     <h1 class="hero-title" id="heroTitle">Abdelrahman Saleh <span class="name-green">Helal</span></h1>
     <div class="hero-subtitle">GIS &amp; Remote Sensing Specialist</div>
+    <div class="hero-typing"><span id="typedText"></span><span class="cursor-blink">|</span></div>
     <p class="hero-bio">
       Passionate about <strong>Remote Sensing</strong>, <strong>Spatial Analysis</strong>,
       <strong>Suitability Modeling</strong>, <strong>Cartography</strong>, and
@@ -867,32 +983,32 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-icon">📁</div>
-      <div class="stat-number" style="color:#3B82F6;">6+</div>
+      <div class="stat-number" style="color:#3B82F6;" data-target="6" data-suffix="+">0+</div>
       <div class="stat-label">Projects</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">⏱️</div>
-      <div class="stat-number" style="color:#06B6D4;">3+</div>
+      <div class="stat-number" style="color:#06B6D4;" data-target="3" data-suffix="+">0+</div>
       <div class="stat-label">Years Experience</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">🛠️</div>
-      <div class="stat-number" style="color:#22C55E;">8+</div>
+      <div class="stat-number" style="color:#22C55E;" data-target="8" data-suffix="+">0+</div>
       <div class="stat-label">GIS Tools</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">🏆</div>
-      <div class="stat-number" style="color:#F59E0B;">7+</div>
+      <div class="stat-number" style="color:#F59E0B;" data-target="7" data-suffix="+">0+</div>
       <div class="stat-label">Certificates</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">🗄️</div>
-      <div class="stat-number" style="color:#a78bfa;">10+</div>
+      <div class="stat-number" style="color:#a78bfa;" data-target="10" data-suffix="+">0+</div>
       <div class="stat-label">Datasets</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">✅</div>
-      <div class="stat-number" style="color:#f472b6;">100%</div>
+      <div class="stat-number" style="color:#f472b6;" data-target="100" data-suffix="%">0%</div>
       <div class="stat-label">Solutions</div>
     </div>
   </div>
@@ -947,6 +1063,13 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
       <div class="edu-desc">Actively pursuing postgraduate studies with a focus on advanced GIS methodologies, geospatial data science, and applied remote sensing research, continuously deepening expertise in spatial decision support and environmental analysis.</div>
       <span class="edu-badge"><i class="fa-solid fa-flask"></i> In Progress</span>
     </div>
+    <div class="edu-item">
+      <div class="edu-dot"></div>
+      <div class="edu-degree">Professional GIS &amp; Remote Sensing Certifications</div>
+      <div class="edu-institution">Esri Academy &amp; Hexagon Geospatial</div>
+      <div class="edu-desc">Completed specialized professional training covering GIS workflows, spatial analysis, imagery interpretation, and remote sensing techniques through Esri Academy and Hexagon's remote sensing certification programs.</div>
+      <span class="edu-badge"><i class="fa-solid fa-certificate"></i> Certifications</span>
+    </div>
   </div>
 </section>
 
@@ -956,38 +1079,53 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     <div class="section-label">Skills</div>
     <h2>Tools &amp; Technologies</h2>
   </div>
-  <div class="skills-grid" id="skillsGrid">
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/arcgis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#3B82F6;"><i class="fa-solid fa-globe"></i></span></div>
-      <div class="skill-info"><span class="skill-name">ArcGIS Pro</span><span class="skill-label">Esri · GIS Platform</span></div>
+  <div class="skills-grid-wrap" id="skillsGrid">
+    <div class="skill-category">
+      <div class="skill-category-title"><i class="fa-solid fa-globe"></i> GIS Software</div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/arcgis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#3B82F6;"><i class="fa-solid fa-globe"></i></span></div>
+          <div class="skill-info"><span class="skill-name">ArcGIS Pro</span><span class="skill-label">Esri · GIS Platform</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/qgis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#6bcc3e;"><i class="fa-solid fa-map"></i></span></div>
+          <div class="skill-info"><span class="skill-name">QGIS</span><span class="skill-label">Open-Source · GIS Platform</span></div>
+        </div>
+      </div>
     </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/qgis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#6bcc3e;"><i class="fa-solid fa-map"></i></span></div>
-      <div class="skill-info"><span class="skill-name">QGIS</span><span class="skill-label">Open-Source · GIS Platform</span></div>
+    <div class="skill-category">
+      <div class="skill-category-title"><i class="fa-solid fa-satellite"></i> Remote Sensing</div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/remote-sensing.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#06B6D4;"><i class="fa-solid fa-satellite"></i></span></div>
+          <div class="skill-info"><span class="skill-name">Remote Sensing</span><span class="skill-label">Satellite Image Analysis</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/gee.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#22C55E;"><i class="fa-brands fa-google"></i></span></div>
+          <div class="skill-info"><span class="skill-name">Google Earth Engine</span><span class="skill-label">Cloud · Raster Analytics</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/erdas.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#9333ea;"><i class="fa-solid fa-eye"></i></span></div>
+          <div class="skill-info"><span class="skill-name">ERDAS Imagine</span><span class="skill-label">Hexagon · Image Processing</span></div>
+        </div>
+      </div>
     </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/remote-sensing.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#06B6D4;"><i class="fa-solid fa-satellite"></i></span></div>
-      <div class="skill-info"><span class="skill-name">Remote Sensing</span><span class="skill-label">Satellite Image Analysis</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/spatial-analysis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#F59E0B;"><i class="fa-solid fa-layer-group"></i></span></div>
-      <div class="skill-info"><span class="skill-name">Spatial Analysis</span><span class="skill-label">Geoprocessing · Modeling</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/gee.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#22C55E;"><i class="fa-brands fa-google"></i></span></div>
-      <div class="skill-info"><span class="skill-name">Google Earth Engine</span><span class="skill-label">Cloud · Raster Analytics</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/autocad.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#e25a1c;"><i class="fa-solid fa-drafting-compass"></i></span></div>
-      <div class="skill-info"><span class="skill-name">AutoCAD</span><span class="skill-label">Autodesk · CAD Design</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/erdas.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#9333ea;"><i class="fa-solid fa-eye"></i></span></div>
-      <div class="skill-info"><span class="skill-name">ERDAS Imagine</span><span class="skill-label">Hexagon · Image Processing</span></div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-icon-wrap"><img src="icons/cartography.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#3B82F6;"><i class="fa-solid fa-map-location-dot"></i></span></div>
-      <div class="skill-info"><span class="skill-name">Cartography</span><span class="skill-label">Map Design · Visualization</span></div>
+    <div class="skill-category">
+      <div class="skill-category-title"><i class="fa-solid fa-layer-group"></i> Spatial Analysis &amp; Design</div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/spatial-analysis.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#F59E0B;"><i class="fa-solid fa-layer-group"></i></span></div>
+          <div class="skill-info"><span class="skill-name">Spatial Analysis</span><span class="skill-label">Geoprocessing · Modeling</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/autocad.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#e25a1c;"><i class="fa-solid fa-drafting-compass"></i></span></div>
+          <div class="skill-info"><span class="skill-name">AutoCAD</span><span class="skill-label">Autodesk · CAD Design</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><img src="icons/cartography.png" alt="" onerror="this.style.display='none'"><span class="sk-fallback" style="color:#3B82F6;"><i class="fa-solid fa-map-location-dot"></i></span></div>
+          <div class="skill-info"><span class="skill-name">Cartography</span><span class="skill-label">Map Design · Visualization</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1011,6 +1149,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">Sand Dune Movement Analysis using ArcGIS</div>
         <div class="proj-desc">Monitored sand dune migration patterns using multi-temporal satellite imagery in ArcGIS Pro, applying change detection to quantify dune displacement rates over five years. Delivered movement maps and reports to environmental management authorities for desertification mitigation.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Remote Sensing</span><span class="proj-badge">Change Detection</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1024,6 +1164,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">Solid Waste Landfill Suitability Analysis</div>
         <div class="proj-desc">Developed a multi-criteria GIS model integrating geology, land use, population density, and transport networks to rank candidate landfill sites via weighted overlay analysis. Results provided decision-makers a scientifically validated shortlist, reducing risk.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Multi-Criteria Analysis</span><span class="proj-badge">Weighted Overlay</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1037,6 +1179,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">Wadi El-Shallal Field Survey &amp; GIS Mapping</div>
         <div class="proj-desc">Conducted a comprehensive field survey of Wadi El-Shallal, Matrouh, using Total Station, GPS, and Level instruments. Integrated all measurements into GIS for spatial analysis, contour mapping, and terrain modelling, producing a full topographic map.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">Total Station</span><span class="proj-badge">GPS</span><span class="proj-badge">ArcGIS</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1050,6 +1194,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">Land Use / Land Cover Change Detection</div>
         <div class="proj-desc">Classified and compared land cover maps from two time periods using Landsat imagery and supervised classification in ArcGIS and ERDAS Imagine. Findings contributed to a regional environmental assessment on urban expansion impacts.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">Landsat</span><span class="proj-badge">ERDAS Imagine</span><span class="proj-badge">Classification</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1063,6 +1209,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">Vegetation Health Monitoring with NDVI</div>
         <div class="proj-desc">Computed NDVI time series from Sentinel-2 imagery to assess seasonal vegetation health, correlating anomalies with drought and soil degradation using Google Earth Engine. Produced monthly health maps for agricultural extension offices.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">Sentinel-2</span><span class="proj-badge">Google Earth Engine</span><span class="proj-badge">NDVI</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1076,6 +1224,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         <div class="proj-title">GIS for Climate Action — Spatial Assessment</div>
         <div class="proj-desc">Applied spatial analysis to assess climate vulnerabilities including flood risk zones, heat islands, and land degradation hotspots using multi-source datasets in ArcGIS Pro. Outputs formatted as policy-ready spatial reports aligned with SDGs.</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
+        <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Climate Risk</span><span class="proj-badge">SDGs</span></div>
+        <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
 
@@ -1126,7 +1276,19 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     <h2>My Achievements</h2>
   </div>
 
-  <div class="cert-category">
+  <div class="cert-toolbar">
+    <div class="cert-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="certSearchInput" placeholder="Search certificates...">
+    </div>
+    <div class="cert-filters" id="certFilters">
+      <button class="cert-filter-btn active" data-filter="all">All</button>
+      <button class="cert-filter-btn" data-filter="remote-sensing">Remote Sensing</button>
+      <button class="cert-filter-btn" data-filter="esri">Esri</button>
+    </div>
+  </div>
+
+  <div class="cert-category" data-cat="remote-sensing">
     <div class="cert-category-title">
       <div class="cat-icon"><i class="fa-solid fa-satellite"></i></div>
       <h3>Remote Sensing Certificates</h3>
@@ -1168,7 +1330,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     </div>
   </div>
 
-  <div class="cert-category">
+  <div class="cert-category" data-cat="esri">
     <div class="cert-category-title">
       <div class="cat-icon" style="color:#3B82F6;border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.1);"><i class="fa-solid fa-globe"></i></div>
       <h3>Esri GIS Certifications</h3>
@@ -1220,6 +1382,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
       </div>
     </div>
   </div>
+
+  <div class="cert-no-results" id="certNoResults"><i class="fa-solid fa-folder-open" style="font-size:1.6rem;display:block;margin-bottom:8px;"></i>No certificates match your search.</div>
 
   <div class="pdf-section">
     <div class="pdf-section-header">
@@ -1290,11 +1454,22 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 
 <footer>© 2026 Abdelrahman Saleh Helal · GIS Portfolio · All Rights Reserved.</footer>
 
-<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
-  <i class="fa-solid fa-arrow-up"></i>
-</button>
-
 <script>
+/* ═══ LOADING SCREEN ═══ */
+(function(){
+  const ls=document.getElementById('loadingScreen'),bar=document.getElementById('loadBarFill');
+  requestAnimationFrame(()=>{bar.style.width='100%';});
+  window.addEventListener('load',()=>{
+    setTimeout(()=>{
+      ls.classList.add('fade-out');
+      setTimeout(()=>{ls.style.display='none';},550);
+    },350);
+  });
+  setTimeout(()=>{ // fallback in case load event is slow
+    if(!ls.classList.contains('fade-out')){ls.classList.add('fade-out');setTimeout(()=>{ls.style.display='none';},550);}
+  },1500);
+})();
+
 /* ═══ MENU ═══ */
 
 
@@ -1335,9 +1510,44 @@ function toggleReadMore(btn){
   btn.textContent=expanded?'Show less ↑':'Read more ↓';
 }
 
-/* ═══ BACK TO TOP ═══ */
-const btt=document.getElementById('backToTop');
-window.addEventListener('scroll',()=>{btt.classList.toggle('visible',window.scrollY>400);},{passive:true});
+/* ═══ CERT SEARCH & FILTER ═══ */
+(function(){
+  const search=document.getElementById('certSearchInput');
+  const filterBtns=document.querySelectorAll('.cert-filter-btn');
+  const categories=document.querySelectorAll('.cert-category');
+  const noResults=document.getElementById('certNoResults');
+  if(!search)return;
+  let activeFilter='all';
+  function applyFilters(){
+    const q=search.value.trim().toLowerCase();
+    let anyVisible=false;
+    categories.forEach(cat=>{
+      const cat_id=cat.dataset.cat;
+      let catHasVisible=false;
+      cat.querySelectorAll('.cert-card').forEach(card=>{
+        const text=card.querySelector('.cert-title').textContent.toLowerCase()+' '+card.querySelector('.cert-desc').textContent.toLowerCase();
+        const matchesFilter=activeFilter==='all'||activeFilter===cat_id;
+        const matchesSearch=!q||text.includes(q);
+        const visible=matchesFilter&&matchesSearch;
+        card.classList.toggle('cert-hidden',!visible);
+        if(visible){catHasVisible=true;anyVisible=true;}
+      });
+      cat.classList.toggle('cert-cat-hidden',!catHasVisible);
+    });
+    noResults.classList.toggle('show',!anyVisible);
+  }
+  search.addEventListener('input',applyFilters);
+  filterBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter=btn.dataset.filter;
+      applyFilters();
+    });
+  });
+})();
+
+/* ═══ NAVBAR SCROLL STATE ═══ */
 const mainNavbar=document.getElementById('mainNavbar');
 window.addEventListener('scroll',()=>{mainNavbar.classList.toggle('scrolled',window.scrollY>30);},{passive:true});
 
@@ -1381,6 +1591,67 @@ setActiveNav();
 /* ═══ SCROLL REVEAL ═══ */
 const revObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObserver.unobserve(e.target);}});},{threshold:0.06});
 document.querySelectorAll('.reveal').forEach(el=>revObserver.observe(el));
+
+/* ═══ HERO TYPING EFFECT ═══ */
+(function(){
+  const el=document.getElementById('typedText');
+  if(!el)return;
+  const phrases=['GIS Analyst','Remote Sensing Specialist','Spatial Data Analyst','GIS Researcher'];
+  let pIdx=0,charIdx=0,deleting=false;
+  function tick(){
+    const phrase=phrases[pIdx];
+    if(!deleting){
+      charIdx++;
+      el.textContent=phrase.slice(0,charIdx);
+      if(charIdx===phrase.length){deleting=true;setTimeout(tick,1500);return;}
+      setTimeout(tick,65);
+    }else{
+      charIdx--;
+      el.textContent=phrase.slice(0,charIdx);
+      if(charIdx===0){deleting=false;pIdx=(pIdx+1)%phrases.length;setTimeout(tick,300);return;}
+      setTimeout(tick,30);
+    }
+  }
+  tick();
+})();
+
+/* ═══ ANIMATED COUNTERS ═══ */
+(function(){
+  const nums=document.querySelectorAll('.stat-number[data-target]');
+  if(!nums.length)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      const el=entry.target,target=parseFloat(el.dataset.target),suffix=el.dataset.suffix||'';
+      const dur=1200,start=performance.now();
+      function step(now){
+        const p=Math.min((now-start)/dur,1);
+        const val=Math.floor(p*target);
+        el.textContent=val+suffix;
+        if(p<1)requestAnimationFrame(step);else el.textContent=target+suffix;
+      }
+      requestAnimationFrame(step);
+      obs.unobserve(el);
+    });
+  },{threshold:0.4});
+  nums.forEach(n=>obs.observe(n));
+})();
+
+/* ═══ BUTTON RIPPLE EFFECT ═══ */
+document.querySelectorAll('.btn-primary,.btn-outline,.proj-footer-btn,.cert-filter-btn,.read-more-btn').forEach(btn=>{
+  btn.classList.add('ripple-wrap');
+  btn.addEventListener('click',function(e){
+    const rect=this.getBoundingClientRect();
+    const ripple=document.createElement('span');
+    ripple.className='ripple-el';
+    const size=Math.max(rect.width,rect.height);
+    ripple.style.width=ripple.style.height=size+'px';
+    ripple.style.left=(e.clientX-rect.left-size/2)+'px';
+    ripple.style.top=(e.clientY-rect.top-size/2)+'px';
+    this.appendChild(ripple);
+    setTimeout(()=>ripple.remove(),600);
+  });
+});
 
 /* ═══ STAGGER CARDS ═══ */
 function makeStagger(selector,cardClass,delay,threshold){
