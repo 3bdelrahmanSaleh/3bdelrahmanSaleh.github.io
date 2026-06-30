@@ -988,7 +988,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     </div>
     <div class="stat-card">
       <div class="stat-icon">⏱️</div>
-      <div class="stat-number" style="color:#06B6D4;" data-target="3" data-suffix="+">0+</div>
+      <div class="stat-number" style="color:#06B6D4;" data-target="2" data-suffix="+">0+</div>
       <div class="stat-label">Years Experience</div>
     </div>
     <div class="stat-card">
@@ -998,7 +998,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     </div>
     <div class="stat-card">
       <div class="stat-icon">🏆</div>
-      <div class="stat-number" style="color:#F59E0B;" data-target="7" data-suffix="+">0+</div>
+      <div class="stat-number" style="color:#F59E0B;" data-target="40" data-suffix="+">0+</div>
       <div class="stat-label">Certificates</div>
     </div>
     <div class="stat-card">
@@ -1730,7 +1730,7 @@ class PdfjsViewer{
   async zoom(delta){const cur=isNaN(this.zoomLevel)?1:this.zoomLevel;this.zoomLevel=Math.min(3,Math.max(0.25,cur+delta));const sel=document.getElementById(this.zoomSelectId);if(sel)sel.value=this.zoomLevel;await this._renderPage(this.currentPage);}
   async rerender(){if(this.pdfDoc)await this._renderPage(this.currentPage);}
 }
-const certViewer=new PdfjsViewer({pdfPath:'شهاده مجمع(1).pdf',canvasAreaId:'pdfjsCanvasArea',pageWrapId:'pdfjsPageWrap',initMsgId:'pdfjsInitMsg',prevBtnId:'pdfjsPrev',nextBtnId:'pdfjsNext',currentPageId:'pdfjsCurrentPage',totalPagesId:'pdfjsTotalPages',zoomOutId:'pdfjsZoomOut',zoomInId:'pdfjsZoomIn',zoomSelectId:'pdfjsZoomSelect',fitWidthId:'pdfjsFitWidth',fitPageId:'pdfjsFitPage',loadingId:'pdfjsLoadingIndicator'});
+const certViewer=new PdfjsViewer({pdfPath:'شهاده مجمع.pdf',canvasAreaId:'pdfjsCanvasArea',pageWrapId:'pdfjsPageWrap',initMsgId:'pdfjsInitMsg',prevBtnId:'pdfjsPrev',nextBtnId:'pdfjsNext',currentPageId:'pdfjsCurrentPage',totalPagesId:'pdfjsTotalPages',zoomOutId:'pdfjsZoomOut',zoomInId:'pdfjsZoomIn',zoomSelectId:'pdfjsZoomSelect',fitWidthId:'pdfjsFitWidth',fitPageId:'pdfjsFitPage',loadingId:'pdfjsLoadingIndicator'});
 const projViewer=new PdfjsViewer({pdfPath:'projects.pdf',canvasAreaId:'projPdfjsCanvasArea',pageWrapId:'projPdfjsPageWrap',initMsgId:'projPdfjsInitMsg',prevBtnId:'projPdfjsPrev',nextBtnId:'projPdfjsNext',currentPageId:'projPdfjsCurrentPage',totalPagesId:'projPdfjsTotalPages',zoomOutId:'projPdfjsZoomOut',zoomInId:'projPdfjsZoomIn',zoomSelectId:'projPdfjsZoomSelect',fitWidthId:'projPdfjsFitWidth',fitPageId:'projPdfjsFitPage',loadingId:'projPdfjsLoadingIndicator'});
 function pdfjsGoPage(d){certViewer.goPage(d);}function pdfjsSetZoom(v){certViewer.setZoom(v);}function pdfjsZoom(d){certViewer.zoom(d);}
 function projPdfjsGoPage(d){projViewer.goPage(d);}function projPdfjsSetZoom(v){projViewer.setZoom(v);}function projPdfjsZoom(d){projViewer.zoom(d);}
