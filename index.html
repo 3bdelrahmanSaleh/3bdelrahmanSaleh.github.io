@@ -1588,16 +1588,19 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 /* ═══ LOADING SCREEN ═══ */
 (function(){
   const ls=document.getElementById('loadingScreen'),bar=document.getElementById('loadBarFill');
-  requestAnimationFrame(()=>{bar.style.width='100%';});
-  window.addEventListener('load',()=>{
-    setTimeout(()=>{
-      ls.classList.add('fade-out');
-      setTimeout(()=>{ls.style.display='none';},550);
-    },350);
-  });
-  setTimeout(()=>{ // fallback in case load event is slow
-    if(!ls.classList.contains('fade-out')){ls.classList.add('fade-out');setTimeout(()=>{ls.style.display='none';},550);}
-  },1500);
+  if(!ls)return;
+  requestAnimationFrame(()=>{if(bar)bar.style.width='100%';});
+  function dismiss(){
+    if(ls.classList.contains('fade-out'))return;
+    ls.classList.add('fade-out');
+    setTimeout(()=>{ls.style.display='none';},560);
+  }
+  // Try on DOMContentLoaded first (faster)
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(dismiss,400));
+  // Also on full load
+  window.addEventListener('load',()=>setTimeout(dismiss,200));
+  // Hard fallback — always dismiss after 2s no matter what
+  setTimeout(dismiss,2000);
 })();
 
 /* ═══ MENU ═══ */
@@ -1890,5 +1893,4 @@ class PdfjsViewer{
     await page.render({canvasContext:ctx,viewport}).promise;
     this.rendering=false;this._updateNavBtns();
   }
-  async goPage(delta){const n=this.currentPage+delta;if(this.pdfDoc&&n>=1&&n<=this.pdfDoc.numPages)await this._renderPage(n);}
-  async 
+  async goPag
