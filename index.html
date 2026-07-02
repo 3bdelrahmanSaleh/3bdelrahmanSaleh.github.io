@@ -1678,7 +1678,7 @@ class PdfjsViewer{
     this.currentPageId=opts.currentPageId;this.totalPagesId=opts.totalPagesId;
     this.zoomOutId=opts.zoomOutId;this.zoomInId=opts.zoomInId;this.zoomSelectId=opts.zoomSelectId;
     this.fitWidthId=opts.fitWidthId;this.fitPageId=opts.fitPageId;this.loadingId=opts.loadingId;
-    this.pdfDoc=null;this.currentPage=1;this.zoomLevel=fitWidth;this.rendering=false;
+    this.pdfDoc=null;this.currentPage=1;this.zoomLevel='fitWidth';this.rendering=false;
   }
   async init(){
     if(!window.pdfjsLib){
