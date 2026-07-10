@@ -946,6 +946,37 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 }
 @media(min-width:900px){.pdf-swipe-hint{display:none;}}
 
+/* ── Year Toggle (Projects 1 & 2 image area only) ── */
+.proj-year-toggle{
+  position:absolute;top:10px;right:10px;z-index:3;
+  display:flex;align-items:center;gap:0;
+  background:rgba(8,17,31,0.72);
+  border:1px solid rgba(59,130,246,0.35);
+  border-radius:999px;padding:3px;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  box-shadow:0 4px 14px rgba(0,0,0,0.35);
+}
+.proj-year-btn{
+  border:none;background:transparent;cursor:pointer;
+  font-family:var(--font-main);font-size:0.68rem;font-weight:700;
+  letter-spacing:0.3px;color:var(--text-muted);
+  padding:5px 11px;border-radius:999px;
+  transition:background 0.25s ease,color 0.25s ease,box-shadow 0.25s ease;
+}
+.proj-year-btn.active{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;box-shadow:0 0 10px rgba(59,130,246,0.5);
+}
+.proj-img-wrap.has-toggle .proj-map-img{
+  transition:opacity 0.45s ease,transform 0.4s;
+  opacity:0;
+}
+.proj-img-wrap.has-toggle .proj-map-img.year-visible{
+  opacity:1;display:block;
+}
+.proj-img-wrap.has-toggle .proj-map-img.year-hidden{
+  opacity:0;pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -1274,9 +1305,14 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 
     <!-- PROJECT CARD 1 🖼️ غيّر "projects/project1.jpg" -->
     <div class="proj-card">
-      <div class="proj-img-wrap">
-        <img class="proj-map-img" data-src="projects/project1.jpg" alt="Sand Dune Movement">
+      <div class="proj-img-wrap has-toggle">
+        <img class="proj-map-img year-visible" data-src="projects/project1_2007.jpg" data-year="2007" alt="Sand Dune Movement 2007">
+        <img class="proj-map-img year-hidden" data-src="projects/project1_2024.jpg" data-year="2024" alt="Sand Dune Movement 2024">
         <div class="proj-img-icon"><i class="fas fa-wind"></i></div>
+        <div class="proj-year-toggle" onclick="event.stopPropagation()">
+          <button type="button" class="proj-year-btn active" onclick="switchProjYear(this,'2007')">2007</button>
+          <button type="button" class="proj-year-btn" onclick="switchProjYear(this,'2024')">2024</button>
+        </div>
       </div>
       <div class="proj-body">
         <div class="proj-title">Sand Dune Movement Analysis using ArcGIS</div>
@@ -1289,9 +1325,14 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 
     <!-- PROJECT CARD 2 🖼️ غيّر "projects/project2.jpg" -->
     <div class="proj-card">
-      <div class="proj-img-wrap">
-        <img class="proj-map-img" data-src="projects/project2.jpg" alt="Landfill Suitability">
+      <div class="proj-img-wrap has-toggle">
+        <img class="proj-map-img year-visible" data-src="projects/project2_2007.jpg" data-year="2007" alt="Landfill Suitability 2007">
+        <img class="proj-map-img year-hidden" data-src="projects/project2_2024.jpg" data-year="2024" alt="Landfill Suitability 2024">
         <div class="proj-img-icon"><i class="fas fa-trash-alt"></i></div>
+        <div class="proj-year-toggle" onclick="event.stopPropagation()">
+          <button type="button" class="proj-year-btn active" onclick="switchProjYear(this,'2007')">2007</button>
+          <button type="button" class="proj-year-btn" onclick="switchProjYear(this,'2024')">2024</button>
+        </div>
       </div>
       <div class="proj-body">
         <div class="proj-title">Solid Waste Landfill Suitability Analysis</div>
@@ -1625,11 +1666,39 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(certLb.classList
 /* ═══ PROJECT IMAGES ═══ */
 document.querySelectorAll('.proj-map-img[data-src]').forEach(img=>{
   const src=img.getAttribute('data-src');
-  const icon=img.parentElement.querySelector('.proj-img-icon');
+  const wrap=img.closest('.proj-img-wrap');
+  const icon=wrap?wrap.querySelector('.proj-img-icon'):img.parentElement.querySelector('.proj-img-icon');
   const t=new Image();
-  t.onload=()=>{img.src=src;img.style.display='block';if(icon)icon.style.opacity='0';};
+  t.onload=()=>{
+    img.src=src;
+    if(wrap&&wrap.classList.contains('has-toggle')){
+      img.style.display='block';
+      if(icon)icon.style.opacity='0';
+    }else{
+      img.style.display='block';
+      if(icon)icon.style.opacity='0';
+    }
+  };
   t.src=src;
 });
+
+/* ═══ PROJECT YEAR TOGGLE (Cards 1 & 2 image area only) ═══ */
+function switchProjYear(btn,year){
+  const toggle=btn.closest('.proj-year-toggle');
+  const wrap=btn.closest('.proj-img-wrap');
+  if(!wrap)return;
+  toggle.querySelectorAll('.proj-year-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  wrap.querySelectorAll('.proj-map-img').forEach(img=>{
+    if(img.getAttribute('data-year')===year){
+      img.classList.add('year-visible');
+      img.classList.remove('year-hidden');
+    }else{
+      img.classList.remove('year-visible');
+      img.classList.add('year-hidden');
+    }
+  });
+}
 
 /* ═══ SKILL ICONS ═══ */
 document.querySelectorAll('.skill-icon-wrap img').forEach(img=>{
