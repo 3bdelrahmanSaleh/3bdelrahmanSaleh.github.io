@@ -1335,19 +1335,26 @@ Water	22.95	22.43</div>
     <!-- PROJECT CARD 2 🖼️ غيّر "projects/project2.jpg" -->
     <div class="proj-card">
       <div class="proj-img-wrap has-toggle">
-        <img class="proj-map-img year-visible" data-src="projects/project2_2007.jpg" data-year="2007" alt="Landfill Suitability 2007">
-        <img class="proj-map-img year-hidden" data-src="projects/project2_2024.jpg" data-year="2024" alt="Landfill Suitability 2024">
+        <img class="proj-map-img year-visible" data-src="manzala2000.jpg" data-year="2000" alt="Landfill Suitability 2007">
+        <img class="proj-map-img year-hidden" data-src="manzala2023.jpg" data-year="2023" alt="Landfill Suitability 2024">
         <div class="proj-img-icon"><i class="fas fa-trash-alt"></i></div>
         <div class="proj-year-toggle" onclick="event.stopPropagation()">
-          <button type="button" class="proj-year-btn active" onclick="switchProjYear(this,'2007')">2007</button>
-          <button type="button" class="proj-year-btn" onclick="switchProjYear(this,'2024')">2024</button>
+          <button type="button" class="proj-year-btn active" onclick="switchProjYear(this,'2000')">2000</button>
+          <button type="button" class="proj-year-btn" onclick="switchProjYear(this,'2023')">2023</button>
         </div>
       </div>
       <div class="proj-body">
-        <div class="proj-title">Solid Waste Landfill Suitability Analysis</div>
-        <div class="proj-desc">Developed a multi-criteria GIS model integrating geology, land use, population density, and transport networks to rank candidate landfill sites via weighted overlay analysis. Results provided decision-makers a scientifically validated shortlist, reducing risk.</div>
+        <div class="proj-title">Spatial Change Detection of Lake Manzala (2000–2023)</div>
+        <div class="proj-desc">Description
+This project analyzes spatial changes in Lake Manzala between 2000 and 2023 using multi-temporal Landsat imagery and supervised classification. The analysis focuses on two major land cover classes: Water Bodies and Built-up Areas. The results indicate a significant reduction in water bodies alongside substantial urban expansion, highlighting major land cover changes across the study area.
+
+Land Cover Change (km²)
+
+Class	         2000    2023
+Water Bodies	1136.80	670.32
+Built-up Areas	236.16	702.60</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
-        <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Multi-Criteria Analysis</span><span class="proj-badge">Weighted Overlay</span></div>
+        <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Remote Sensing</span><span class="proj-badge">Change Detection</span></div>
         <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
       </div>
     </div>
