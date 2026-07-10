@@ -533,12 +533,12 @@ h2{
   box-shadow:0 16px 40px rgba(59,130,246,0.12);
 }
 .proj-img-wrap{
-  width:100%;height:200px;position:relative;overflow:hidden;
+  width:100%;height:280px;position:relative;overflow:hidden;
   border-bottom:1px solid var(--border);
   background:linear-gradient(135deg,#0a1628,#0d1f3c);
 }
-.proj-img-wrap img.proj-map-img{width:100%;height:100%;object-fit:cover;display:none;transition:transform 0.4s;}
-.proj-card:hover .proj-map-img{transform:scale(1.05);}
+.proj-img-wrap img.proj-map-img{width:100%;height:100%;object-fit:contain;display:none;transition:transform 0.4s;}
+.proj-card:hover .proj-map-img{transform:scale(1.03);}
 .proj-img-wrap::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);
@@ -553,8 +553,28 @@ h2{
 .proj-desc{
   font-size:0.83rem;color:var(--text-muted);line-height:1.65;flex:1;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  white-space:pre-line;
 }
-.proj-desc.expanded{display:block;overflow:visible;}
+.proj-desc.expanded{display:block;overflow:visible;-webkit-line-clamp:unset;}
+.proj-data-table{
+  width:100%;border-collapse:collapse;margin:12px 0;font-size:0.78rem;
+  background:rgba(59,130,246,0.03);border-radius:10px;overflow:hidden;
+}
+.proj-data-table caption{
+  text-align:left;font-size:0.75rem;font-weight:700;color:var(--secondary);
+  margin-bottom:6px;letter-spacing:0.3px;
+}
+.proj-data-table th,.proj-data-table td{
+  padding:8px 10px;text-align:center;border:1px solid var(--border);
+}
+.proj-data-table th{
+  background:rgba(59,130,246,0.12);color:var(--text);font-weight:700;
+}
+.proj-data-table td:first-child,.proj-data-table th:first-child{text-align:left;color:var(--text-muted);}
+.proj-data-table tbody tr:nth-child(odd){background:rgba(59,130,246,0.03);}
+body.light .proj-data-table th{background:rgba(59,130,246,0.1);color:#0f172a;}
+body.light .proj-data-table td{color:#334155;}
+body.light .proj-data-table{background:rgba(59,130,246,0.02);}
 .read-more-btn{display:none;
   align-self:flex-start;background:none;border:none;cursor:pointer;
   font-size:0.77rem;font-weight:600;color:var(--primary);padding:2px 0;
@@ -968,6 +988,7 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
   color:#fff;box-shadow:0 0 10px rgba(59,130,246,0.5);
 }
 .proj-img-wrap.has-toggle .proj-map-img{
+  position:absolute;top:0;left:0;
   transition:opacity 0.45s ease,transform 0.4s;
   opacity:0;
 }
@@ -1316,16 +1337,17 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
       </div>
       <div class="proj-body">
         <div class="proj-title">Spatial Change Detection of Zagazig District (2007–2024)</div>
-        <div class="proj-desc">Description
-This project analyzes land use/land cover changes in Zagazig District between 2007 and 2024 using multi-temporal Landsat imagery and supervised classification. Four major land cover classes were mapped: Urban Areas, Agricultural Land, Roads, and Water Bodies. The results reveal noticeable urban expansion accompanied by a decline in agricultural land, while road networks increased slightly and water bodies remained relatively stable.
-
-Land Cover Change (km²)
-
-Class	2007	2024
-Urban	33.31	45.81
-Agriculture	239.18	218.71
-Roads	50.23	58.72
-Water	22.95	22.43</div>
+        <div class="proj-desc">This project analyzes land use/land cover changes in Zagazig District between 2007 and 2024 using multi-temporal Landsat imagery and supervised classification. Four major land cover classes were mapped: Urban Areas, Agricultural Land, Roads, and Water Bodies. The results reveal noticeable urban expansion accompanied by a decline in agricultural land, while road networks increased slightly and water bodies remained relatively stable.
+<table class="proj-data-table">
+<caption>Land Cover Change (km²)</caption>
+<thead><tr><th>Class</th><th>2007</th><th>2024</th></tr></thead>
+<tbody>
+<tr><td>Urban</td><td>33.31</td><td>45.81</td></tr>
+<tr><td>Agriculture</td><td>239.18</td><td>218.71</td></tr>
+<tr><td>Roads</td><td>50.23</td><td>58.72</td></tr>
+<tr><td>Water</td><td>22.95</td><td>22.43</td></tr>
+</tbody>
+</table></div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
         <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Remote Sensing</span><span class="proj-badge">Change Detection</span></div>
         <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
@@ -1345,14 +1367,15 @@ Water	22.95	22.43</div>
       </div>
       <div class="proj-body">
         <div class="proj-title">Spatial Change Detection of Lake Manzala (2000–2023)</div>
-        <div class="proj-desc">Description
-This project analyzes spatial changes in Lake Manzala between 2000 and 2023 using multi-temporal Landsat imagery and supervised classification. The analysis focuses on two major land cover classes: Water Bodies and Built-up Areas. The results indicate a significant reduction in water bodies alongside substantial urban expansion, highlighting major land cover changes across the study area.
-
-Land Cover Change (km²)
-
-Class	         2000    2023
-Water Bodies	1136.80	670.32
-Built-up Areas	236.16	702.60</div>
+        <div class="proj-desc">This project analyzes spatial changes in Lake Manzala between 2000 and 2023 using multi-temporal Landsat imagery and supervised classification. The analysis focuses on two major land cover classes: Water Bodies and Built-up Areas. The results indicate a significant reduction in water bodies alongside substantial urban expansion, highlighting major land cover changes across the study area.
+<table class="proj-data-table">
+<caption>Land Cover Change (km²)</caption>
+<thead><tr><th>Class</th><th>2000</th><th>2023</th></tr></thead>
+<tbody>
+<tr><td>Water Bodies</td><td>1136.80</td><td>670.32</td></tr>
+<tr><td>Built-up Areas</td><td>236.16</td><td>702.60</td></tr>
+</tbody>
+</table></div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
         <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Remote Sensing</span><span class="proj-badge">Change Detection</span></div>
         <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
@@ -1687,13 +1710,11 @@ document.querySelectorAll('.proj-map-img[data-src]').forEach(img=>{
   const t=new Image();
   t.onload=()=>{
     img.src=src;
-    if(wrap&&wrap.classList.contains('has-toggle')){
-      img.style.display='block';
-      if(icon)icon.style.opacity='0';
-    }else{
-      img.style.display='block';
-      if(icon)icon.style.opacity='0';
-    }
+    img.style.display='block';
+    if(icon)icon.style.opacity='0';
+  };
+  t.onerror=()=>{
+    // keep icon visible if the image truly fails to load
   };
   t.src=src;
 });
@@ -1722,11 +1743,18 @@ document.querySelectorAll('.skill-icon-wrap img').forEach(img=>{
   else{img.addEventListener('load',function(){const fb=img.nextElementSibling;if(fb)fb.style.display='none';});}
 });
 
-/* ═══ READ MORE ═══ */
+/* ═══ READ MORE (each card scoped strictly to itself) ═══ */
 function toggleReadMore(btn){
-  const desc=btn.previousElementSibling;
+  if(!btn)return;
+  const card=btn.closest('.proj-card');
+  const desc=card?card.querySelector('.proj-desc'):btn.previousElementSibling;
+  if(!desc)return;
   const expanded=desc.classList.toggle('expanded');
   btn.textContent=expanded?'Show less ↑':'Read more ↓';
+  const footerBtn=card?card.querySelector('.proj-footer-btn'):null;
+  if(footerBtn)footerBtn.innerHTML=expanded
+    ?'<i class="fa-solid fa-circle-info"></i> Hide Details'
+    :'<i class="fa-solid fa-circle-info"></i> View Details';
 }
 
 /* ═══ CERT SEARCH & FILTER ═══ */
