@@ -1306,8 +1306,8 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
     <!-- PROJECT CARD 1 🖼️ غيّر "projects/project1.jpg" -->
     <div class="proj-card">
       <div class="proj-img-wrap has-toggle">
-        <img class="proj-map-img year-visible" data-src="projects/project1_2007.jpg" data-year="2007" alt="Sand Dune Movement 2007">
-        <img class="proj-map-img year-hidden" data-src="projects/project1_2024.jpg" data-year="2024" alt="Sand Dune Movement 2024">
+        <img class="proj-map-img year-visible" data-src="supervised2007.png" data-year="2007" alt="Sand Dune Movement 2007">
+        <img class="proj-map-img year-hidden" data-src="supervised2024.png" data-year="2024" alt="Sand Dune Movement 2024">
         <div class="proj-img-icon"><i class="fas fa-wind"></i></div>
         <div class="proj-year-toggle" onclick="event.stopPropagation()">
           <button type="button" class="proj-year-btn active" onclick="switchProjYear(this,'2007')">2007</button>
@@ -1315,8 +1315,17 @@ body.light .proj-img-wrap{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
         </div>
       </div>
       <div class="proj-body">
-        <div class="proj-title">Sand Dune Movement Analysis using ArcGIS</div>
-        <div class="proj-desc">Monitored sand dune migration patterns using multi-temporal satellite imagery in ArcGIS Pro, applying change detection to quantify dune displacement rates over five years. Delivered movement maps and reports to environmental management authorities for desertification mitigation.</div>
+        <div class="proj-title">Spatial Change Detection of Zagazig District (2007–2024)</div>
+        <div class="proj-desc">Description
+This project analyzes land use/land cover changes in Zagazig District between 2007 and 2024 using multi-temporal Landsat imagery and supervised classification. Four major land cover classes were mapped: Urban Areas, Agricultural Land, Roads, and Water Bodies. The results reveal noticeable urban expansion accompanied by a decline in agricultural land, while road networks increased slightly and water bodies remained relatively stable.
+
+Land Cover Change (km²)
+
+Class	2007	2024
+Urban	33.31	45.81
+Agriculture	239.18	218.71
+Roads	50.23	58.72
+Water	22.95	22.43</div>
         <button class="read-more-btn" onclick="toggleReadMore(this)">Read more ↓</button>
         <div class="proj-badges"><span class="proj-badge">ArcGIS Pro</span><span class="proj-badge">Remote Sensing</span><span class="proj-badge">Change Detection</span></div>
         <div class="proj-footer"><button class="proj-footer-btn" onclick="toggleReadMore(this.closest('.proj-body').querySelector('.read-more-btn'))"><i class="fa-solid fa-circle-info"></i> View Details</button></div>
