@@ -1985,7 +1985,7 @@ class PdfjsViewer{
   async rerender(){if(this.pdfDoc)await this._renderPage(this.currentPage);}
 }
 const certViewer=new PdfjsViewer({pdfPath:'certificates.pdf',canvasAreaId:'pdfjsCanvasArea',pageWrapId:'pdfjsPageWrap',initMsgId:'pdfjsInitMsg',prevBtnId:'pdfjsPrev',nextBtnId:'pdfjsNext',currentPageId:'pdfjsCurrentPage',totalPagesId:'pdfjsTotalPages',zoomOutId:'pdfjsZoomOut',zoomInId:'pdfjsZoomIn',zoomSelectId:'pdfjsZoomSelect',fitWidthId:'pdfjsFitWidth',fitPageId:'pdfjsFitPage',loadingId:'pdfjsLoadingIndicator'});
-const projViewer=new PdfjsViewer({pdfPath:'projects.pdf',canvasAreaId:'projPdfjsCanvasArea',pageWrapId:'projPdfjsPageWrap',initMsgId:'projPdfjsInitMsg',prevBtnId:'projPdfjsPrev',nextBtnId:'projPdfjsNext',currentPageId:'projPdfjsCurrentPage',totalPagesId:'projPdfjsTotalPages',zoomOutId:'projPdfjsZoomOut',zoomInId:'projPdfjsZoomIn',zoomSelectId:'projPdfjsZoomSelect',fitWidthId:'projPdfjsFitWidth',fitPageId:'projPdfjsFitPage',loadingId:'projPdfjsLoadingIndicator'});
+const projViewer=new PdfjsViewer({pdfPath:'maps2.pdf',canvasAreaId:'projPdfjsCanvasArea',pageWrapId:'projPdfjsPageWrap',initMsgId:'projPdfjsInitMsg',prevBtnId:'projPdfjsPrev',nextBtnId:'projPdfjsNext',currentPageId:'projPdfjsCurrentPage',totalPagesId:'projPdfjsTotalPages',zoomOutId:'projPdfjsZoomOut',zoomInId:'projPdfjsZoomIn',zoomSelectId:'projPdfjsZoomSelect',fitWidthId:'projPdfjsFitWidth',fitPageId:'projPdfjsFitPage',loadingId:'projPdfjsLoadingIndicator'});
 addSwipeNav('pdfjsCanvasArea',certViewer);
 addSwipeNav('projPdfjsCanvasArea',projViewer);
 function pdfjsGoPage(d){certViewer.goPage(d);}function pdfjsSetZoom(v){certViewer.setZoom(v);}function pdfjsZoom(d){certViewer.zoom(d);}
